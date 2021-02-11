@@ -162,6 +162,20 @@ module.exports = {
               strict: `ignore`,
             },
           },
+<<<<<<< HEAD
+=======
+          {
+            resolve: 'gatsby-remark-mermaid',
+            options: {
+              language: 'mermaid',
+              theme: 'dark',
+              viewport: {
+                width: 630,
+                height: 630
+              }
+            }
+          },
+>>>>>>> caf027d (Readme con instrucciones para añadir el report)
           `gatsby-remark-autolink-headers`,
           `gatsby-remark-external-links`,
           `gatsby-remark-responsive-tables`,
