@@ -2,9 +2,7 @@
 project: 'potentiostat'
 students:
   - name: 'Lucía Chacón'
-    picture:
   - name: 'Celia Sánchez'
-    picture:
 repo: 'https://github.com/Biomedical-Electronics/masb-pot-s-datablondies'
 date: 2021-06-18
 language: 'en'

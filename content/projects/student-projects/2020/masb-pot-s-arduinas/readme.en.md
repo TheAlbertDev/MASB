@@ -32,8 +32,8 @@ A potentiostat is an **electronic device** required to **control a three-electro
 The potentiostat used in this project consists of a _front-end_ that has been specifically designed for the subject and a _back-end_ that consists of the _Evaluation Board_ (EVB) NUCLEO-F401RE from STMicroelectronics.
 
 <p align="center">
-  <a href="assets/Potentiostat.PNG">
-    <img src="assets/Potentiostat.PNG" alt="Potenciostato" />
+  <a href="assets/Potentiostat.png">
+    <img src="assets/Potentiostat.png" alt="Potenciostato" />
   </a>
 </p>
 
@@ -226,8 +226,8 @@ Its operation is explained in the following video.
 As previously stated, due to the pandemic caused by **Sars-Cov-2**, the code created for the potentiostat operation could not be tested in the laboratory. Anyway, tests could be done using the viSens-S application, using our STM32 Nucleo-F401RE from STMicroelectronics with a potentiometer. A voltage divider has been made, connecting the terminal variable to the defined analog inputs. Below you can see a picture of the connection.
 
 <p align="center">
-  <a href="assets/potenciometre1.PNG">
-    <img src="assets/potenciometre1.PNG" alt="potenciometre" />
+  <a href="assets/potenciometre1.png">
+    <img src="assets/potenciometre1.png" alt="potenciometre" />
   </a>
 </p>
 
@@ -236,32 +236,32 @@ It must be taken into account that in order to carry out the test, comments to t
 The following images show the data obtained with the potentiometer connected to the microcontroller through the viSens-S application. These tests have served to **verify the operation of the code implemented for the two techniques discussed (cyclic voltammetry and chronoamperometry) and the connection between the host (microcontroller) and the desktop application (viSens-S).**
 
 <p align="center">
-  <a href="assets/PLOT_CA.PNG">
-    <img src="assets/PLOT_CA.PNG" alt="plot ca" />
+  <a href="assets/PLOT_CA.png">
+    <img src="assets/PLOT_CA.png" alt="plot ca" />
   </a>
 </p>
 
 > Example of graphic representation of chronoamperometry results with the viSens-S application.
 
 <p align="center">
-  <a href="assets/DATA_CA.PNG">
-    <img src="assets/DATA_CA.PNG" alt="data ca" />
+  <a href="assets/DATA_CA.png">
+    <img src="assets/DATA_CA.png" alt="data ca" />
   </a>
 </p>
 
 > Example of data obtained from a chronoamperometry with the viSens-S application.
 
 <p align="center">
-  <a href="assets/PLOT_CV.PNG">
-    <img src="assets/PLOT_CV.PNG" alt="plot cv" />
+  <a href="assets/PLOT_CV.png">
+    <img src="assets/PLOT_CV.png" alt="plot cv" />
   </a>
 </p>
 
 > Example of graphic representation of cyclic voltammetry results with the viSens-S application.
 
 <p align="center">
-  <a href="assets/DATA_CV.PNG">
-    <img src="assets/DATA_CV.PNG" alt="data cv" />
+  <a href="assets/DATA_CV.png">
+    <img src="assets/DATA_CV.png" alt="data cv" />
   </a>
 </p>
 

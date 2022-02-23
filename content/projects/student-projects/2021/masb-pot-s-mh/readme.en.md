@@ -69,7 +69,7 @@ In order to reproduce this technique, the flow diagram of the designed code is d
 
 <p align="center">
   <img
-    src="assets/imgs/cv_flux_diagram.PNG"
+    src="assets/imgs/cv_flux_diagram.png"
     alt="Sensor usado en el laboratorio."
   />
 </p>
@@ -80,7 +80,7 @@ In order to reproduce this technique, the flow diagram of the designed code is d
 
 <p align="center">
   <img
-    src="assets/imgs/ca_flux_diagram.PNG"
+    src="assets/imgs/ca_flux_diagram.png"
     alt="Sensor usado en el laboratorio."
   />
 </p>
@@ -104,13 +104,13 @@ Once this configuration is done, the back-end is connected to the computer. Thro
 First of all, we see the results obtained with the cyclic voltammetry. To do this, we previously set its parameters: 2 cycles are performed between Evertex1 = 0.6V and Evertex2 = -0.6V, starting from Ebegin = 0 V.
 
 <p align="center">
-  <img src="assets/imgs/volta.PNG" alt="Resultados voltametría cíclica." />
+  <img src="assets/imgs/volta.png" alt="Resultados voltametría cíclica." />
 </p>
 
 The result of the chronoamperometry is shown below. In this case, the input parameters are Edc = 0.5 V, the sampling frequency and the measurement time. We see how the resulting current in the electrochemical cell is approximately 23 μA.
 
 <p align="center">
-  <img src="assets/imgs/crono.PNG" alt="Resultados voltametría cíclica." />
+  <img src="assets/imgs/crono.png" alt="Resultados voltametría cíclica." />
 </p>
 
 Finally, as previously presented, the project is validated in the laboratory by performing several measurements with a sample of potassium ferricyanide at two different concentrations, in a potassium chloride buffer; these concentrations were 5 mM and 1 mM. For this we have used a sensor like the one we see on the first image, where we can observe the CE, WE and RE, from left to right. This sensor is connected to the EVB and the corresponding measurements are obtained.
@@ -130,14 +130,14 @@ The obtained results are shown below.
 
 <p align="center">
   <img
-    src="assets/imgs/resultado_CA.PNG"
+    src="assets/imgs/resultado_CA.png"
     alt="Resultados experimentales voltametría cíclica."
   />
 </p>
 
 <p align="center">
   <img
-    src="assets/imgs/CV_results.PNG"
+    src="assets/imgs/CV_results.png"
     alt="Resultados experimentales voltametría cíclica."
   />
 </p>

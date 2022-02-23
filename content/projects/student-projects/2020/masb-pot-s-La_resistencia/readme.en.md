@@ -61,7 +61,7 @@ The different functionalities have been developed in individual branches to be l
 
 The configuration of the microcontroller can be seen in the following figure where we see all the connections that are necessary to carry out the project.
 
-![](assets/imgs/configuracio.PNG)
+![](assets/imgs/configuracio.png)
 
 The main components of the project are described below:
 
@@ -111,9 +111,9 @@ By having a potentiostat that was provided to us before we found ourselves in th
 
 <p align = "center">
 
-<a href="assets/imgs/placa.JPG">
+<a href="assets/imgs/placa.jpg">
 
-<img src="assets/imgs/placa.JPG" width="300" />
+<img src="assets/imgs/placa.jpg" width="300" />
 
 </a>
 

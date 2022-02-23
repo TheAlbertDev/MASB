@@ -45,7 +45,7 @@ In this section of the introduction there is a brief description of the techniqu
 A potentiostat is a type of circuit used to make electrochemical measurements. It is a very used device in the field of medicine, more specifically in the design and development of biosensors, such as glucose detectos for example. It consists of three electrodes: the counter electrode (CE), the working electrode (WE), and the reference electrode (RE). It also counts with a high-amplification and high-impedande amplifier to set the working voltage, and with a transimedance amplifier at the output to measure the intensity current variations inside the electrochemical cell. In figure 1 we can see an example of the potentiostat circuit
 
 <p align="center">
-<img src="Assets/Img/potentiostat.PNG" alt="Git" width="400" />
+<img src="Assets/Img/potentiostat.png" alt="Git" width="400" />
 
 </p>
 
@@ -59,7 +59,7 @@ The chronoamperometry is a time-dependent measurement technique in which a certa
 
 <p align="center">
 
-<img src="Assets/Img/crono.PNG" alt="Git" width="300" />
+<img src="Assets/Img/crono.png" alt="Git" width="300" />
 </p>
 
 > **Figure 3**: Representation of a chronoamperometry [4].
@@ -69,7 +69,7 @@ The chronoamperometry is a time-dependent measurement technique in which a certa
 The cyclic voltametry, on the other hand, is an electrochemical technique widely used that can be useful for obtaining qualitative and quantitative information on electrochemical reactions, such as kinematics, reaction mechanisms, electrocatalytic processes, the reversibility of reaction and more parameters. During the measurement, the potential of the WE is measured with respect to the RE, and the potential is forces between two limits using a signal like the one shown in figure 3. At the same time, the current passing through the cell is also measured, which depends on the applied potential [5]. The signal corresponding to a redox has a shape similar to the one in figure 3, where the top peak marks the oxidation of the solution, and the lower peak indicates its reduction. This technique can also be used to do redox studies on the surface of the WE.
 
 <p align="center">
-  <img src="Assets/Img/ciclic.PNG" alt="Git" width="600" />
+  <img src="Assets/Img/ciclic.png" alt="Git" width="600" />
 </p>
 
 > **Figure 4**: Esquema de una cronoamperometría [5].
@@ -82,7 +82,7 @@ There are many types of microcontrollers that can be used to automate processes,
 
 <p align="center">
 
-<img src="Assets/Img/placa.PNG" alt="Git" width="300" />
+<img src="Assets/Img/placa.png" alt="Git" width="300" />
 
 </p>
 
@@ -101,7 +101,7 @@ The objective of this project is the implementation of a microcontroller to mana
 The developed program must have the following structue and be able to carry out the described functions in the following flow diagram.
 
 <p align="center">
-  <img src="Assets/Img/micro-flow.PNG" alt="Git" width="700" />
+  <img src="Assets/Img/micro-flow.png" alt="Git" width="700" />
 </p>
 
 > **Figure 6**: Flow diagram that the microcontroller must follow.

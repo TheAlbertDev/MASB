@@ -169,7 +169,7 @@ A version control system is a tool that allows us to collaborate with other deve
 To work in a more organized way and not overwrite files, it is common to create separate versions of the code (called **branches** in Git) and then merge it with the **master** version when we have finished editing it. If we look at the following image, the new changes would be tested in the `feature` branches and, once confirmed, they would be added to the `develop` branch and, finally, to the `master` branch.
 
 <p align="center">
-  <img src="assets/imgs/branches.JPG" alt="Branches" width="350" />
+  <img src="assets/imgs/branches.jpg" alt="Branches" width="350" />
 </p>
 
 > **Figure 3:** Example of development branches in a Git project.
