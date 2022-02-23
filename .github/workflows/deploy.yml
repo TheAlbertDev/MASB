@@ -42,7 +42,7 @@ jobs:
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/master' }}
+        if: ${{ github.ref == 'refs/heads/www/master' }}
         with:
           personal_token: ${{ secrets.PERSONAL_TOKEN }}
           publish_branch: www/production
