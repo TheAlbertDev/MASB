@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-pages-index-tsx",
+    "path": "/",
+    "result": {"data":{"news":{"nodes":[{"frontmatter":{"title":"¡Ya se encuentra disponible la web de MASB!","date":"2022-02-23T00:00:00.000Z","tags":["general"]},"fields":{"slug":"/noticias/lanzamiento-de-la-web-de-masb"}}]}},"pageContext":{}},
+    "staticQueryHashes": ["63159454"]}
