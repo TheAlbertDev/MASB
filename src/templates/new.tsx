@@ -12,7 +12,6 @@ type TNewProps = {
 const New = ({ data, location }: TNewProps) => {
   const _new = data.new;
   const title = _new.frontmatter.title;
-  console.log(data);
   return (
     <Layout title={title} location={location}>
       <Text mt={{ base: 24, sm: 32 }} fontSize="sm" as="div">
