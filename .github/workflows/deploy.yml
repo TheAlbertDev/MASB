@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: "16"
+          node-version: '16'
 
       - name: Cache dependencies
         uses: actions/cache@v2
@@ -42,15 +42,9 @@ jobs:
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-<<<<<<< HEAD
-        if: ${{ github.ref == 'refs/heads/master' }}
-        with:
-          personal_token: ${{ secrets.PERSONAL_TOKEN }}
-=======
         if: ${{ github.ref == 'refs/heads/www/master' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
->>>>>>> 9c91ca74317d505ae62cb2d9d16122900cc25865
           publish_branch: www/production
           publish_dir: ./public
           cname: masb.thealbert.dev
