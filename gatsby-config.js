@@ -6,6 +6,7 @@ module.exports = {
     siteUrl: `https://masb.thealbert.dev`,
   },
   plugins: [
+<<<<<<< HEAD
     {
       resolve: '@chakra-ui/gatsby-plugin',
       options: {
@@ -21,6 +22,8 @@ module.exports = {
         isUsingColorMode: true,
       },
     },
+=======
+>>>>>>> 9c91ca74317d505ae62cb2d9d16122900cc25865
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-image`,
     {
