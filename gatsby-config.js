@@ -2,8 +2,8 @@ module.exports = {
   siteMetadata: {
     title: `MASB`,
     description: `Microcontroladores para aplicaciones y sistemas biomédicos.`,
-    author: `Albert Álvarez Carula <hello@thealbert.dev`,
-    siteUrl: `https://thealbert.dev/masb`,
+    author: `Albert Álvarez Carulla <hello@thealbert.dev>`,
+    siteUrl: `https://masb.thealbert.dev`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

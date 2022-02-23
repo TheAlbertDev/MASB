@@ -90,3 +90,13 @@ exports.createPages = async function ({ actions, graphql }) {
     });
   });
 };
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions;
+  const typeDefs = `
+    type MarkdownRemarkFrontmatterStudents {
+      picture: File @fileByRelativePath
+    }
+  `;
+  createTypes(typeDefs);
+};
