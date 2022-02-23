@@ -2,9 +2,7 @@
 project: 'potentiostat'
 students:
   - name: 'Marc Palomer'
-    picture:
   - name: 'Laia Borrell'
-    picture:
 repo: 'https://github.com/Biomedical-Electronics/masb-pot-s-marclaia'
 date: 2021-06-18
 language: 'en'
