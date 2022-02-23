@@ -110,7 +110,7 @@ const AcercaDePage = () => {
         </ListItem>
         <ListItem>
           Capacidad para concebir, diseñar y producir equipos y sistemas
-          especificamente dedicados a la biología y la medicina.
+          específicamente dedicados a la biología y la medicina.
           Particularmente, integrar algoritmos de procesamiento de información
           en el <i>hardware</i> adecuado.
         </ListItem>
@@ -118,10 +118,10 @@ const AcercaDePage = () => {
       <Heading as="h3" fontSize="2xl">
         Metodología
       </Heading>
-      En todo equipo o instrumentso biomédico existe una unidad encargada del
+      En todo equipo o instrumentos biomédico existe una unidad encargada del
       procesado y la gestión de los datos. Al mismo tiempo, también se encarga
       de ofrecer interfaces con el usuario (UI) y los diferentes módulos de
-      instrumentación que puedan haber. Estos dispositivos son los
+      instrumentación que pueda haber. Estos dispositivos son los
       microcontroladores. En MASB se utiliza una metodología{' '}
       <Link href="https://es.wikipedia.org/wiki/Aprendizaje_semipresencial">
         <i>b-learning</i> o <i>blended learning</i>
@@ -130,10 +130,10 @@ const AcercaDePage = () => {
       aula, como fundamentos teóricos explicados mediante diferentes recursos
       multimedia (documentos de texto, diapositivas, artículos, vídeos,
       infografías, etc.); y se utiliza el tiempo en el aula para realizar
-      procesos cognitivos de mayor complejidad que favorzcan el aprendizaje
+      procesos cognitivos de mayor complejidad que favorezcan el aprendizaje
       significativo mediante prácticas y proyectos, demostraciones en vivo y
-      resolución de dudas. MASB está organizada en dos macrocriclos. En un
-      primer macrociclo se introduce a los estudiantes al mundo de los
+      resolución de dudas. MASB está organizada en dos macrociclos. En un primer
+      macrociclo se introduce a los estudiantes al mundo de los
       microcontroladores y a la programación de cada uno de los módulos básicos
       del dispositivo biomédico para, posteriormente, pasar a su implementación
       guiada y práctica en el laboratorio. Dentro de este macrociclo, cada uno
