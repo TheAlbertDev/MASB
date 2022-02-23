@@ -21,7 +21,7 @@ type TStudentProjectCardProps = {
   repo: string;
   year: number;
   slug: string;
-  students: Array<{ name: string; picture: string }>;
+  students: Array<{ name: string; picture?: string }>;
 };
 
 const StudentProjectCard = (props: TStudentProjectCardProps) => {
