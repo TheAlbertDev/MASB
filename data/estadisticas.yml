@@ -1,0 +1,18 @@
+- year: 2020
+  numberStudents:
+    gender:
+      male: 2
+      female: 6
+      other: 0
+- year: 2021
+  numberStudents:
+    gender:
+      male: 6
+      female: 11
+      other: 0
+- year: 2022
+  numberStudents:
+    gender:
+      male: 5
+      female: 1
+      other: 0

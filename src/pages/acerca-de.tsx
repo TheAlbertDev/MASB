@@ -1,7 +1,27 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import Link from '../components/Link';
-import { Heading, ListItem, Text, UnorderedList } from '@chakra-ui/react';
+import { Heading, ListItem, UnorderedList, Box } from '@chakra-ui/react';
+import { Bar } from 'react-chartjs-2';
+import stadistics from '../../data/estadisticas.yml';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const AcercaDePage = () => {
   return (
@@ -181,6 +201,123 @@ const AcercaDePage = () => {
       <Heading as="h3" fontSize="2xl">
         Entidades colaboradoras
       </Heading> */}
+      <Heading as="h3" fontSize="2xl">
+        Estadísticas
+      </Heading>
+      <Box
+        height={{
+          base: '350px', // 0-48em
+          md: '400px',
+          xl: '450px', // 80em+
+        }}
+      >
+        <Bar
+          options={{
+            plugins: {
+              title: {
+                display: true,
+                text: 'Número de estudiantes',
+                font: {
+                  family:
+                    '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+                  size: 16,
+                },
+                color: '#ffffff',
+              },
+              legend: {
+                labels: {
+                  font: {
+                    family:
+                      '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+                    size: 16,
+                  },
+                  color: '#ffffff',
+                },
+              },
+            },
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                title: {
+                  text: 'Año',
+                  display: true,
+                  color: '#ffffff',
+                  font: {
+                    family:
+                      '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+                    size: 16,
+                  },
+                },
+                ticks: {
+                  font: {
+                    family:
+                      '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+                    size: 16,
+                  },
+                  color: '#ffffff',
+                },
+                stacked: true,
+                grid: {
+                  drawBorder: false,
+                  display: false,
+                },
+              },
+              y: {
+                title: {
+                  text: 'Número de estudiantes',
+                  display: true,
+                  color: '#ffffff',
+                  font: {
+                    family:
+                      '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+                    size: 16,
+                  },
+                },
+                ticks: {
+                  font: {
+                    family:
+                      '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+                    size: 16,
+                  },
+                  color: '#ffffff',
+                },
+                stacked: true,
+                grid: {
+                  drawBorder: false,
+                  display: true,
+                  color: 'rgba(255, 255, 255, 0.25)',
+                },
+              },
+            },
+          }}
+          data={{
+            labels: stadistics.map((data: any) => data.year),
+            datasets: [
+              {
+                label: 'Hombres',
+                data: stadistics.map(
+                  (data: any) => data.numberStudents.gender.male
+                ),
+                backgroundColor: 'rgb(84, 86, 218)',
+              },
+              {
+                label: 'Mujeres',
+                data: stadistics.map(
+                  (data: any) => data.numberStudents.gender.female
+                ),
+                backgroundColor: 'rgb(255, 99, 132)',
+              },
+              {
+                label: 'Otros',
+                data: stadistics.map(
+                  (data: any) => data.numberStudents.gender.other
+                ),
+                backgroundColor: 'rgb(159, 230, 101)',
+              },
+            ],
+          }}
+        />
+      </Box>
     </Layout>
   );
 };
