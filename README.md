@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# MASB webiste
-=======
 La página web [https://masb.thealbert.dev/](https://masb.thealbert.dev/) sirve como portafolio de los proyectos realizados por los estudiantes de la asignatura de Microcontroladores para Aplicaciones y Sistemas Biomédicos (MASB). Aquí se recogen los informes finales realizados por los estudiantes en los que presentan el proyecto realizado, la metodología y procedimientos utilizados, los resultados obtenidos y su conclusiones.  Por ello, en el siguiente documento se recoge el procedimiento que deben de seguir los estudiantes para subir sus trabajos a la página web.
 
 # Instalación de NodeJS
@@ -131,4 +128,3 @@ y hacemos clic al enlace web que nos aparecerá en el terminal una vez se haya c
 # *Pull Request*
 
 Una vez finalizamos nuestro informe, lo subimos en GitHub y hacemos un Pull Request al repositorio original. Esperamos retroacción y, si todo está correcto, se hará un *merge* al repositorio.
->>>>>>> caf027d (Readme con instrucciones para añadir el report)
