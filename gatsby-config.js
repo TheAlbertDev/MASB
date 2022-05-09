@@ -162,6 +162,17 @@ module.exports = {
               strict: `ignore`,
             },
           },
+          {
+            resolve: 'gatsby-remark-mermaid',
+            options: {
+              language: 'mermaid',
+              theme: 'dark',
+              viewport: {
+                width: 630,
+                height: 630
+              }
+            }
+          },
           `gatsby-remark-autolink-headers`,
           `gatsby-remark-external-links`,
           `gatsby-remark-responsive-tables`,
