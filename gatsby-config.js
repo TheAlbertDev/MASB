@@ -162,8 +162,6 @@ module.exports = {
               strict: `ignore`,
             },
           },
-<<<<<<< HEAD
-=======
           {
             resolve: 'gatsby-remark-mermaid',
             options: {
@@ -175,7 +173,6 @@ module.exports = {
               }
             }
           },
->>>>>>> caf027d (Readme con instrucciones para añadir el report)
           `gatsby-remark-autolink-headers`,
           `gatsby-remark-external-links`,
           `gatsby-remark-responsive-tables`,
