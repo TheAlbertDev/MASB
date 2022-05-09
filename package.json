@@ -33,10 +33,7 @@
     "gatsby-remark-images": "^6.0.0",
     "gatsby-remark-katex": "^6.1.0",
     "gatsby-remark-mathjax": "^1.0.0",
-<<<<<<< HEAD
-=======
     "gatsby-remark-mermaid": "^2.1.0",
->>>>>>> caf027d (Readme con instrucciones para añadir el report)
     "gatsby-remark-prismjs": "^6.0.0",
     "gatsby-remark-responsive-iframe": "^5.0.0",
     "gatsby-source-filesystem": "^4.0.0",
@@ -47,10 +44,7 @@
     "mathjax": "^3.2.0",
     "prismjs": "^1.25.0",
     "prop-types": "^15.7.2",
-<<<<<<< HEAD
-=======
     "puppeteer": "^14.0.0",
->>>>>>> caf027d (Readme con instrucciones para añadir el report)
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
@@ -75,18 +69,11 @@
   ],
   "license": "0BSD",
   "scripts": {
-<<<<<<< HEAD
-    "build": "gatsby build",
-    "develop": "gatsby develop",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "start": "gatsby develop",
-=======
     "build": "npm build:tables && gatsby build",
     "build:tables": "cd plugins/gatsby-remark-responsive-tables && npm install && npm run build",
     "develop": "npm run build:tables && gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "npm run build:tables && gatsby develop",
->>>>>>> caf027d (Readme con instrucciones para añadir el report)
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
