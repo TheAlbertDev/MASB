@@ -69,7 +69,7 @@
   ],
   "license": "0BSD",
   "scripts": {
-    "build": "npm build:tables && gatsby build",
+    "build": "npm run build:tables && gatsby build",
     "build:tables": "cd plugins/gatsby-remark-responsive-tables && npm install && npm run build",
     "develop": "npm run build:tables && gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
