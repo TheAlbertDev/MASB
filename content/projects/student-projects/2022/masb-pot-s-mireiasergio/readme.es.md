@@ -22,7 +22,7 @@ El siguiente documento contiene los conceptos necesarios para el desarrollo de l
 # Tabla de contenido
 
 * [Introducción](#introducción)
-  * [¿Qué es un potenciostato?](#¿-qué-es-un-potenciostato-?)
+  * [¿Qué es un potenciostato?](#qué-es-un-potenciostato)
   * [Mediciones electroquímicas](#mediciones-electroquímicas)
     * [Voltametría cíclica](#voltametría-cíclica)
     * [Cronoamperometría](#cronoamperometría)
