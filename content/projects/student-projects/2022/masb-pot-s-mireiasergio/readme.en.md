@@ -10,7 +10,7 @@ students:
     linkedin: 'sergio-venteo-benavente-5617351b5'
     picture: 'assets/imgs/Sergio-Venteo-Benavente.jpg'
 repo: 'https://github.com/Biomedical-Electronics/masbstat-mireiasergio'
-date: 2022-06-15
+date: 2022-06-17
 language: 'en'
 title: 'Microcontrollers project: configuration of a potentiostat'
 ---
@@ -107,10 +107,11 @@ Commonly, each developer creates their own branch and edits the project from it.
 * ```master```: branch containing the final code after merging all the created branches. Therefore, it will not be until all the created branches have been testes that they will be merged. 
 * ```develop```: after the ```feature```branches have been succesfully tested, the will be merged with the ```develop``` branch. As for the final step, it will be merged with the ```master``` branch.
 * ```feature/CA```: this branch contains the programming of the chronoamperometry, in which a cosntant tension of the elcotrchemical cell has been fixed for a period of time and the measurement is taken.
-* ```feature/cyclyc_voltammetry```: this branch contains the programming of the cyclic voltameetry
-* ```feature/DAC```: this branch contains the DAC configuration.
+* ```feature/cyclyc_voltammetry```: this branch contains the programming of the cyclic voltammetry
 * ```feature/stm32```: this branch contains the microcontroller configuration, where all the develop functions are called -chronoamperometry, cyclic voltammetry...- for the excution of the complete program. In this brachn we can find the *setup* and *loop* function for the execution of the measurements always that the predefinied requirements are fulfilled.
-* ```feature/adc```: this branch contains the ADC configuration.
+* ```feature/ADC```: this branch contains the ADC configuration.
+* ```feature/PMU```: this branch contains the PMU configuration.
+* ```feature/timer```: this branch contains the timer configuration.
 
 # Objectives
 
@@ -226,27 +227,79 @@ In this section we will see the different structure and flow of each program.
 
 - SETUP function from `stm32main.c`. 
 
-<p align="center">
-  <img src="assets/imgs/diagramas_micro_page-0003.jpg" alt="Flow Diagram of the SETUP." width="400" />
-</p>
+```mermaid
+flowchart TD
+    A((SETUP)) --> B(Peripheral Configuration: <br>Relay GPIO, ADC, I2S and UART);
+    B --> C(ADC and I2C initialization);
+    C --> D(Wait for the command: <br>MASB_COMM_S_waitForMessage);
+    D --> E((END));
+```
 
 - LOOP function from `stm32main.c`. 
 
-<p align="center">
-  <img src="assets/imgs/diagramas_micro_page-0004.jpg" alt="Flow Diagram of the LOOP." width="400" />
-</p>
+```mermaid
+flowchart TD
+    A((LOOP)) --> C{Observe if we have received a message:<br> MASB_COMM_S_dataReceived}
+    C --False--> E{Check the Condition}
+    C --True--> D{Check what we have received:<br> MASB_COMM_S_command}
+    E -->F{Case CV}
+    F-->G(Start cyclic voltammetry<br> and Condition = IDLE)
+    E-->H{Case CA}
+    H-->I(Start chronoamperometry<br> and Condition = IDLE)
+    D -->J{Case:<br> START_CV_MEAS}
+    J-->K(Configure voltammetry peripherals<br> and Condition = CV)
+    D-->L{Case:<br> START_CA_MEAS}
+    L-->M(Configure chronoamperometry peripherals<br> and Condition = CA)
+    D-->N{Case:<br> STOP_MEAS}
+    N-->O(Condition = IDLE)
+    K & M & O-->P(Wait for a new message:MASB_COMM_S_waitForMessage)
+```
 
 - The implementation of the chronoamperometry is performed on `chrono_amperometry.c` and it is represented on this workflow. 
 
-<p align="center">
-  <img src="assets/imgs/diagramas_micro_page-0002.jpg" alt="Flow Diagram of the chronoamperometry." width="400" />
-</p>
+```mermaid
+flowchart TD
+    A((START)) --> B((V_cell = eDC))
+    B --> C((Close relay))
+    C --> D((Configure Timer))
+    D --> E{Elapsed Sampling<br> Period}
+    E -- False--> D
+    E --True--> F((Initialize ADC))
+    F--> G((Measure V_cell <br>and I_cell))
+    G -->H((Create structure <br>to send data))
+    H-->I((Send data))
+    I-->J{Elapsed Measurement <br> Time}
+    J --False-->D
+    J --True--> K((Open Relay))
+    K-->L((END))
+```
 
 - The general structure of the cyclic voltammetry can be observed on the following figure and it is specified in the code of the file `cyclic_voltammetry.c`.
 
-<p align="center">
-  <img src="assets/imgs/diagramas_micro_page-0002.jpg" alt="Flow Diagram of the cyclic voltammetry." width="400" />
-</p>
+```mermaid
+flowchart TD
+    A((START))-->B((V_cell=eBegin));
+    B-->C(( vObjective = eVertex1));
+    C-->D((Close relay))
+    D-->E((Configure Timer))
+    E-->F{while i smaller than cycles}
+    F-->G((Initialize ADC))
+    G-->H((Measure V_cell and I_cell))
+    H-->I((Create structure to send data))
+    I-->J((Send data))
+    J-->K{V_cell==vObjective}
+    K--False-->L{V_cell+eStep>vObjective}
+    L--True-->M((V_cell=vObjective))
+    L--False-->N((decrease or increment<br> of eStep in V_cell))
+    K--True-->O{vObjective==eVertex1}
+    O--False-->P{vObjective==eVertex2}
+    O--True-->Q((vObjective=eVertex2))
+    P--False-->R{i==cycles}
+    P--True-->S((vObjective=eBegin))
+    R--False-->T((vObjective=eVertex1))
+    R--True-->U((Open Relay))
+    U-->V((END))
+```
 
 # Results
 
@@ -278,4 +331,6 @@ Finally, the obtained results with the experimental measurement of the cyclic vo
 
 # Conclusions
 
-dddd
+In this project we have performed a programming of a potentiostat, obtaining a succesful implementation to obtain the chronoamperometry and the voltammetry cyclic of a solution of potassium ferricyanide at different concentrations in a potassium chloride buffer. To achieve that, we have need to do the programming in a _STM32 Nucleo-F401RE_ evaluation board. The configuration of this one has been essential to perform the posterior programming. During the course, we have learned about microcontrollers and different peripherals studied were used in this project for the correct function of the programm. 
+
+What is more, we have used GitHub to develop the project synchronously with our partner. We have been able to control the evolution of the project and different branches have been used to develop it. Finally, differents tests have been performed to ensure the correct function of the project. 
