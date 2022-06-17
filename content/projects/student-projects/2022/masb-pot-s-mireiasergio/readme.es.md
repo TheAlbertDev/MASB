@@ -19,15 +19,15 @@ El presente proyecto, desarrollado por el equipo *mireiasergio*, integrado por M
 
 El siguiente documento contiene los conceptos necesarios para el desarrollo de las aplicaciones descritas así como toda la información derivada de este.
 
-## Tabla de contenido
+# Tabla de contenido
 
-* [Introducción](#introduccion)
-  * [¿Qué es un potenciostato?](#¿que-es-un-potenciostato?)
-  * [Medidas electroquímicas](#medidas-electroquimicas)
-    * [Voltametría cíclica](#voltametria-ciclica)
-    * [Cronoamperometría](#cronoamperometria)
+* [Introducción](#introducción)
+  * [¿Qué es un potenciostato?](#¿-qué-es-un-potenciostato-?)
+  * [Mediciones electroquímicas](#mediciones-electroquímicas)
+    * [Voltametría cíclica](#voltametría-cíclica)
+    * [Cronoamperometría](#cronoamperometría)
   * [Git y Github](#git-y-github)
-    * [Ramas en Git](#ramas-en-git)
+    * [Ramas Git](#ramas-git)
 * [Objetivos](#objetivos)
 * [Metodología](#metodología)
  * [Diseño](#diseño)
@@ -37,15 +37,15 @@ El siguiente documento contiene los conceptos necesarios para el desarrollo de l
       * [Variables necesarias](#variables-necesarias)
       * [Diagramas de flujo](#diagramas-de-flujo)
 * [Resultados](#resultados)
-  * [Resultados de la cronoamperometría](#resultados-de-la-cronoamperometria)
-  * [Resultados de la voltametría cíclica](#resultados-de-la-voltametria-ciclica)
+  * [Resultados de la cronoamperometría](#resultados-de-la-cronoamperometría)
+  * [Resultados de la voltametría cíclica](#resultados-de-la-voltametría-cíclica)
 * [Conclusiones](#conclusiones)
 
 # Introducción
 
 Durante las últimas décadas, el campo de la medicina ha experimentado una mejoría exponencial, consecuencia directa de los avances tecnológicos. Entre las diferentes áreas tecnológicas, la aplicación de la nanotecnología en la medicina ha supuesto grandes avances, superando retos que en el pasado eran inimaginables de resolver.
 
-Los avances mencionados ​​han permitido a los ingenieros diseñar dispositivos portátiles y miniaturizados que facilitan el trabajo de los médicos. Como resultado, destacable ha sido el impacto en el sector de la salud, desarrollando, por ejemplo, versiones más pequeñas de dispositivos de diagnóstico. Recientemente, los biosensores miniaturizados han comenzado a formar parte de nuestra vida diaria, representando un potencial instrumento para pruebas en el lugar de asistencia.
+Los avances mencionados han permitido a los ingenieros diseñar dispositivos portátiles y miniaturizados que facilitan el trabajo de los médicos. Como resultado, destacable ha sido el impacto en el sector de la salud, desarrollando, por ejemplo, versiones más pequeñas de dispositivos de diagnóstico. Recientemente, los biosensores miniaturizados han comenzado a formar parte de nuestra vida diaria, representando un potencial instrumento para pruebas en el lugar de asistencia.
 
 Los potenciostatos constituyen uno de los elementos centrales de los biosensores. De este modo, el correcto desarrollo de tal componente es crucial para el óptimo desempeño del instrumento esmentado. Siguiendo esta línea, el presente proyecto tiene como objetivo construir y programar un potenciostato con un EB Nucleo-F401R de STMicroelectronics.
 
@@ -87,7 +87,7 @@ Una [cronoamperometría](https://www.gamry.com/Framework%20Help/HTML5%20-%20Trip
 La cronoamperometría se utiliza para el estudio cinemático de reacciones químicas, procesos de difusión y adsorción.
 
 <p align="center">
-  <img src="assets/imgs/Chronoamperometry.PNG" alt="Gráfica típica de una cronoamperometría." width="400" />
+  <img src="assets/imgs/Chronoamperometry.png" alt="Gráfica típica de una cronoamperometría." width="400" />
 </p>
 
 ## Git y GitHub
@@ -110,7 +110,10 @@ Comúnmente, cada desarrollador crea su propia rama y edita el proyecto desde el
 * ```feature/CA```: esta rama contiene la programación de la cronoamperometría, en la cual se ha fijado una tensión constante de la celda elcotrquímica por un período de tiempo y se toma la medida.
 * ```feature/cyclyc_voltammetry```: esta rama contiene la programación de la voltametría cíclica
 * ```feature/stm32```: esta rama contiene la configuración del microcontrolador, donde se denominan todas las funciones desarrolladas -cronoamperometría, voltamperometría cíclica...- para la ejecución del programa completo. En esta rama podemos encontrar la función *setup* y *loop* para la ejecución de las medidas siempre que se cumplan los requisitos predefinidos.
-* ```feature/adc```: esta rama contiene la configuración de ADC.
+* ```feature/ADC```: esta rama contiene la configuración del ADC.
+* ```feature/PMU```: esta rama contiene la configuración del PMU.
+* ```feature/timer```: esta rama contiene la configuración del timer.
+
 
 # Objetivos
 
@@ -144,7 +147,7 @@ La placa STM32 Nucleo-F401RE es la placa utilizada para realizar el proyecto. Pe
 
 <p align="center">
   <img src="assets/imgs/stm32-nucleo.jpg" alt="Placa STM32 Nucleo-F401RE." 
-" width="400" />
+width="400" />
 </p>
 
 ### Diseño de la estructura
@@ -229,27 +232,78 @@ En esta sección veremos la diferente estructura y flujo de los principales prog
 
 - Función SETUP de `stm32main.c`. 
 
-<p align="center">
-  <img src="assets/imgs/diagramas_micro_page-0003-esp.jpg" alt="Diagrama de Flujo del SETUP." width="400" />
-</p>
+```mermaid
+flowchart TD
+    A((SETUP)) --> B(Configuración Periféricos: <br>Relay GPIO, ADC, I2S and UART  )
+    B --> C(Inicialización ADC y I2C)
+    C --> D(Esperar al comando:MASB_COMM_S_waitForMessage)
+    D --> E((FINAL))
+```
 
 - Función LOOP de `stm32main.c`. 
 
-<p align="center">
-  <img src="assets/imgs/diagramas_micro_page-0004-esp.jpg" alt="Diagrama de Flujo del LOOP." width="400" />
-</p>  
-
+```mermaid
+flowchart TD
+    A((LOOP)) --> C{Observar si hemos recibido mensaje:<br> MASB_COMM_S_dataReceived}
+    C --Falso--> E{Comprobar Estado}
+    C --Cierto--> D{Comprobar que hemos recibido:<br> MASB_COMM_S_command}
+    E -->F{Caso CV}
+    F-->G(Empezar voltammetría cíclica<br> y Estado = IDLE)
+    E-->H{Caso CA}
+    H-->I(Empezar cronoamperometría<br> and Estado = IDLE)
+    D -->J{Caso:<br> START_CV_MEAS}
+    J-->K(Configurar periféricos voltammetría<br> and Estado = CV)
+    D-->L{Caso:<br> START_CA_MEAS}
+    L-->M(Configurar periféricos cronoamperometría<br> and Estado = CA)
+    D-->N{Caso:<br> STOP_MEAS}
+    N-->O(Estado = IDLE)
+    K & M & O-->P(Esperar a un nuevo mensaje::MASB_COMM_S_waitForMessage)
+```
 - La implementación de la cronoamperometría se realiza en `chrono_amperometry.c` y se representa en este flujo de trabajo.
 
-<p align="center">
-  <img src="assets/imgs/diagramas_micro_page-0002-esp.jpg" alt="Diagrama de Flujo de la cronoamperometría." width="400" />
-</p>
+```mermaid
+flowchart TD
+    A((Comienzo)) --> B((V_cell = eDC))
+    B --> C((Cerrar relé))
+    C --> D((Configurar Timer))
+    D --> E{Transcurrido Sampling<br> Period}
+    E -- Falso--> D
+    E --Cierto--> F((Inicializar ADC))
+    F--> G((Medir V_cell <br>y I_cell))
+    G -->H((Crear estructura <br>para enviar datos))
+    H-->I((Enviar datos))
+    I-->J{Transcurrido Measurement <br> Time}
+    J --Falso-->D
+    J --Cierto--> K((Abrir Relé))
+    K-->L((Final))
+```
 
 - La estructura general de la voltametría cíclica se puede observar en la siguiente figura y se especifica en el código del archivo `cyclic_voltammetry.c`.
 
-<p align="center">
-  <img src="assets/imgs/diagramas_micro_page-0002-esp.jpg" alt=" Diagrama de Flujo de la voltammetría cíclica." width="400" />
-</p>
+```mermaid
+flowchart TD
+    A((Comienzo))-->B((V_cell=eBegin))
+    B-->C(( vObjective = eVertex1))
+    C-->D((Cerrar relé))
+    D-->E((Configurar Timer))
+    E-->F{Mientras i sea menor que los ciclos}
+    F-->G((Inicializar ADC))
+    G-->H((Medir V_cell and I_cell))
+    H-->I((Crear estructura para enviar datos))
+    I-->J((Enviar datos))
+    J-->K{V_cell==vObjective}
+    K--False-->L{V_cell+eStep>vObjective}
+    L--True-->M((V_cell=vObjective))
+    L--False-->N((Decrecimiento o incremento<br> de eStep en V_cell))
+    K--True-->O{vObjective==eVertex1}
+    O--False-->P{vObjective==eVertex2}
+    O--True-->Q((vObjective=eVertex2))
+    P--False-->R{i==cycles}
+    P--True-->S((vObjective=eBegin))
+    R--False-->T((vObjective=eVertex1))
+    R--True-->U((Cerrar relé))
+    U-->V((Final))
+```
 
 # Resultados
 
@@ -272,7 +326,7 @@ Los resultados obtenidos con la medida experimental de la cronoamperometría se 
   <img src="assets/imgs/ca-results.png" alt="Resultados de cronoamperometría." width = "400" />
 </p>
 
-## Resultados de voltametría cíclica
+## Resultados de la voltametría cíclica
 
 Finalmente, los resultados obtenidos con la medida experimental de la voltametría cíclica se presentan en la siguiente figura. Los parámetros establecidos se pueden observar en el margen izquierdo.
 
@@ -280,4 +334,8 @@ Finalmente, los resultados obtenidos con la medida experimental de la voltametr�
   <img src="assets/imgs/cv-results.png" alt="Resultados de voltametría cíclica" width="400" />
 </p>
 
-## Conclusiones
+# Conclusiones
+
+En este proyecto se ha realizado la programación de un potenciostato, obteniendo una implementación exitosa para obtener la cronoamperometría y la voltamperometría cíclica de una solución de ferricianuro de potasio a diferentes concentraciones en un tampón de cloruro de potasio. Para lograr eso, tenemos que hacer la programación en una _Placa de evaluación STM32 Nucleo-F401RE_. La configuración de éste ha sido fundamental para realizar la programación posterior. Durante el curso, hemos aprendido acerca de los microcontroladores y diferentes periféricos estudiados fueron utilizados en este proyecto para el correcto funcionamiento del programa.
+
+Además, hemos utilizado GitHub para desarrollar el proyecto de forma sincrónica con nuestro socio. Hemos podido controlar la evolución del proyecto y diferentes ramas se han utilizado para desarrollarlo. Finalmente, se han realizado diferentes pruebas para asegurar el correcto funcionamiento del proyecto.
