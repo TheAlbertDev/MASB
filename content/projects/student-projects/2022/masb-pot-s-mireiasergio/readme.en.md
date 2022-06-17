@@ -19,10 +19,10 @@ The current project, developed by the team *mireiasergio*, composed by Mireia Al
 
 The following document contains the concepts required for the development of the described applications as well all the information derived from it.
 
-## Table of contents 
+# Table of contents 
 
 * [Introduction](#introduction)
-  * [What is a potentiostat?](#what-is-a-potentiostat?)
+  * [What is a potentiostat?](#what-is-a-potentiostat)
   * [Electrochemical measurements](#electrochemical-measurements)
     * [Cyclic voltammetry](#cyclic-voltammetry)
     * [Cronoamperometry](#cronoamperometry)
