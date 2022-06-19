@@ -319,7 +319,7 @@ The cyclic voltammetry test has its own particular internal workings that must b
        M --> |Yes|N(vTarget = eBegin)
        N --> G
        M --> |No|O{Last cycle?}
-       Or --> |No|P(vTarget = eVertex1)
+       O --> |No|P(vTarget = eVertex1)
        P --> G
        O --> |Yes|S(Open relay)
        S --> T(Wait for new instruction)
