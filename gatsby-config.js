@@ -69,6 +69,13 @@ module.exports = {
       options: {
         plugins: [
           {
+            resolve: 'gatsby-remark-mermaid',
+            options: {
+              language: 'mermaid',
+              theme: 'dark',
+            },
+          },
+          {
             resolve: 'gatsby-remark-code-titles',
             options: {
               className: 'codeBlockTitle',
@@ -161,17 +168,6 @@ module.exports = {
               // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
               strict: `ignore`,
             },
-          },
-          {
-            resolve: 'gatsby-remark-mermaid',
-            options: {
-              language: 'mermaid',
-              theme: 'dark',
-              viewport: {
-                width: 630,
-                height: 630
-              }
-            }
           },
           `gatsby-remark-autolink-headers`,
           `gatsby-remark-external-links`,

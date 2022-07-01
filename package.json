@@ -33,7 +33,7 @@
     "gatsby-remark-images": "^6.0.0",
     "gatsby-remark-katex": "^6.1.0",
     "gatsby-remark-mathjax": "^1.0.0",
-    "gatsby-remark-mermaid": "^2.1.0",
+    "gatsby-remark-mermaid": "github:TheAlbertDev/gatsby-remark-mermaid",
     "gatsby-remark-prismjs": "^6.0.0",
     "gatsby-remark-responsive-iframe": "^5.0.0",
     "gatsby-source-filesystem": "^4.0.0",

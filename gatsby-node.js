@@ -45,7 +45,10 @@ exports.createPages = async function ({ actions, graphql }) {
   const { data } = await graphql(`
     query {
       studentProjects: allMarkdownRemark(
-        filter: { fields: { contentType: { eq: "student-projects" } } }
+        filter: {
+          fields: { contentType: { eq: "student-projects" } }
+          frontmatter: { language: { eq: "es" } }
+        }
       ) {
         nodes {
           fields {
