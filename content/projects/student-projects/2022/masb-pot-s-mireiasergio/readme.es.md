@@ -310,7 +310,7 @@ flowchart TD
 La siguiente sección tiene como objetivo presentar los resultados obtenidos con el potenciostato programado. Las técnicas descritas anteriormente se probaron realizando primero una validación técnica con un circuito de resistencia-diodo y finalmente utilizando una muestra de ferricianuro de potasio a 1 mM en una solución tampón de cloruro de potasio.
 
 <p align="center">
-  <img src="assets/imgs/experiment.jpeg" alt="Set-up del experimento." width="400" />
+  <img src="assets/imgs/experiment.jpg" alt="Set-up del experimento." width="400" />
 </p>  
 
 
