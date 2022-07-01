@@ -153,6 +153,11 @@ const styles = {
     '.math.math-display': {
       overflowX: 'auto',
     },
+    '.mermaid>svg': {
+      maxWidth: '100%',
+      margin: '0 auto',
+      height: 'auto',
+    },
   },
 };
 
