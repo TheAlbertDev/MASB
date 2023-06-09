@@ -3,7 +3,7 @@ project: 'potentiostat'
 students:
   - name: 'Xavier Ullastre'
     linkedin: 'xavier-ullastre-4613a5225'
-    picture: 'assets/imgs/ruben-cuervo-noguera.jpg'
+    picture: 'assets/imgs/xavier-ullastre-busca.jpg'
   - name: 'Antonio Javier Gomez'
     linkedin: 'antonio-javier-gomez-asencio-4075bb23a'
     picture: 'assets/imgs/pere-pena-pujos.jpg'
@@ -13,7 +13,7 @@ language: 'es'
 title: 'MASB xavi2 project: Programming a Potentiostat'
 ---
 
-<p style="text-align: justify;">A continuación, se detalla el proyecto realizado por dos alumnos del grado de Ingeniería Biomédica de la Universidad de Barcelona (UB) en la asignatura optativa de Microcontroladores para Aplicaciones y Sistemas Biomédicos. Xavier Gómez Asensio y Xavier Ullastre Buscá, han desarrollado el algoritmo del microcontrolador STM32F401 Nucleo-64 que permite realizar dos tipos diferentes de mediciones, voltamperometría cíclica y cronoamperometría, mediante un potenciostato. El proyecto también incluye el control del microcontrolador mediante un set de instrucciones específicos así como la visualización de los datos obtenidos mediante ViSens-S. En los siguientes apartados entraremos más en detalle en los diferentes pasos seguidos para el desarrollo del proyecto y también se mostrarán los resultados obtenidos. </p>
+<p style="text-align: justify;">A continuación, se detalla el proyecto realizado por dos alumnos del grado de Ingeniería Biomédica de la Universidad de Barcelona (UB) en la asignatura optativa de Microcontroladores para Aplicaciones y Sistemas Biomédicos. Xavier Gómez Asencio y Xavier Ullastre Buscá, han desarrollado el algoritmo del microcontrolador STM32F401 Nucleo-64 que permite realizar dos tipos diferentes de mediciones, voltamperometría cíclica y cronoamperometría, mediante un potenciostato. El proyecto también incluye el control del microcontrolador mediante un set de instrucciones específicos así como la visualización de los datos obtenidos mediante ViSens-S. En los siguientes apartados entraremos más en detalle en los diferentes pasos seguidos para el desarrollo del proyecto y también se mostrarán los resultados obtenidos. </p>
 
 ## Tabla de contenidos
 
@@ -36,35 +36,35 @@ Para la correcta realización de este proyecto se han definido los siguientes su
 
 ## Marco Teórico
 
-<p style="text-align: justify;">Una vez definidos los objetivos, en esta sección se describen brevemente los principales contextos relacionados con el proyecto para poder entender cada una de las partes de este. </p> 
+Una vez definidos los objetivos, en esta sección se describen brevemente los principales contextos relacionados con el proyecto para poder entender cada una de las partes de este.  
 
 ### Potenciostato
-<p style="text-align: justify;">Un potenciostato es un dispositivo electrónico utilizado en el mundo de la electroquímica para controlar y medir potenciales eléctricos de una celda electroquímica, dispositivo experimental para generar electricidad mediante una reacción redox. </p>
+Un potenciostato es un dispositivo electrónico utilizado en el mundo de la electroquímica para controlar y medir potenciales eléctricos de una celda electroquímica, dispositivo experimental para generar electricidad mediante una reacción redox. 
 
-<p style="text-align: justify;">El potenciostato esta formado por tres electrodos. En primer lugar, el electrodo de trabajo, el cual está en contacto directo con la muestra o solución electroquímica a analizar y mantiene un potencial constante. El segundo electrodo es el llamado electrodo de referencia y establece el potencial de referencia para la medición. Finalmente, el electrodo auxiliar completa el circuito eléctrico permitiendo el flujo de corriente. </p>
+El potenciostato esta formado por tres electrodos. En primer lugar, el electrodo de trabajo, el cual está en contacto directo con la muestra o solución electroquímica a analizar y mantiene un potencial constante. El segundo electrodo es el llamado electrodo de referencia y establece el potencial de referencia para la medición. Finalmente, el electrodo auxiliar completa el circuito eléctrico permitiendo el flujo de corriente. 
 
-<p style="text-align: justify;">Este sistema funciona manteniendo el potencial del electrodo de trabajo a nivel constante en relación con el electrodo de referencia mediante la aplicación de una tensión o corriente de control con el electrodo auxiliar. Al mantener constante el potencial entre el electrodo de trabajo y el de referencia, se puede medir la corriente generada en la celda electroquímica como respuesta a ese potencial. </p>
+Este sistema funciona manteniendo el potencial del electrodo de trabajo a nivel constante en relación con el electrodo de referencia mediante la aplicación de una tensión o corriente de control con el electrodo auxiliar. Al mantener constante el potencial entre el electrodo de trabajo y el de referencia, se puede medir la corriente generada en la celda electroquímica como respuesta a ese potencial. 
 
 ![](C:\microcontrolers\MASB\content\projects\student-projects\2023\masb-pot-s-xavi-2\assets\imgs\Potentiostato.png)
 
-<p style="text-align: justify;">Uno de los principales usos del potenciostato es la aplicación de diferentes técnicas de medición electroquímica donde se incluyen la voltametría cíclica y la cronoamperometría. Estas técnicas permiten obtener información sobre las propiedades electroquímicas de una muestra como por ejemplo la concentración de especies químicas o la cinética de las reacciones electroquímicas. </p>
+Uno de los principales usos del potenciostato es la aplicación de diferentes técnicas de medición electroquímica donde se incluyen la voltametría cíclica y la cronoamperometría. Estas técnicas permiten obtener información sobre las propiedades electroquímicas de una muestra como por ejemplo la concentración de especies químicas o la cinética de las reacciones electroquímicas. 
 
 ### Voltamperometría Cíclica
 
 
-<p style="text-align: justify;">La voltametría cíclica (CV) es una técnica electroquímica potenciodinámica comúnmente utilizada para investigar las propiedades de una muestra en solución o de moléculas adsorbidas en el electrodo, mediante la medición del potencial de reducción. En un experimento de CV, el potencial del electrodo de trabajo se varía de forma lineal en función del tiempo y se monitorea la corriente a través de un circuito. Después de alcanzar el potencial establecido, el potencial del electrodo de trabajo se invierte en la dirección opuesta para regresar al potencial inicial, generando ciclos de rampas de potencial.</p>
+La voltametría cíclica (CV) es una técnica electroquímica potenciodinámica comúnmente utilizada para investigar las propiedades de una muestra en solución o de moléculas adsorbidas en el electrodo, mediante la medición del potencial de reducción. En un experimento de CV, el potencial del electrodo de trabajo se varía de forma lineal en función del tiempo y se monitorea la corriente a través de un circuito. Después de alcanzar el potencial establecido, el potencial del electrodo de trabajo se invierte en la dirección opuesta para regresar al potencial inicial, generando ciclos de rampas de potencial.
 
-<p style="text-align: justify;">La corriente leída se registra y se grafica en función del voltaje aplicado, lo que resulta en un voltamograma cíclico.</p>
+La corriente leída se registra y se grafica en función del voltaje aplicado, lo que resulta en un voltamograma cíclico.
 
 ![](C:\microcontrolers\MASB\content\projects\student-projects\2023\masb-pot-s-xavi-2\assets\imgs\vc_grafico.png)
 
 
 
-<p style="text-align: justify;">En la figura de arriba podemos ver el resultado de una voltametría cíclica. Los dos picos corresponden a los picos de oxidación y reducción de la muestra. Los picos y las formas de los voltamograma cíclicos pueden indicar reacciones electroquímicas reversibles o irreversibles, la presencia de especies redox, la concentración de analitos, la cinética de las reacciones, la adsorción/desorción de moléculas en la superficie del electrodo, entre otros parámetros.</p>
+En la figura de arriba podemos ver el resultado de una voltametría cíclica. Los dos picos corresponden a los picos de oxidación y reducción de la muestra. Los picos y las formas de los voltamograma cíclicos pueden indicar reacciones electroquímicas reversibles o irreversibles, la presencia de especies redox, la concentración de analitos, la cinética de las reacciones, la adsorción/desorción de moléculas en la superficie del electrodo, entre otros parámetros.
 
 ### Cronoamperometría
 
-<p style="text-align: justify;">Por otro lado, la cronoamperometría es una técnica electroquímica utilizada para obtener información sobre procesos de transferencia de carga  y reacciones electroquímicas en la muestra. El principio de esta técnica consiste en establecer el potencial del electrodo de trabajo y monitorizar el corriente resultante en función del tiempo. La corriente se debe a procesos farádicos  provocados por el paso del potencial en los que hay transferencia de electrones. </p>
+Por otro lado, la cronoamperometría es una técnica electroquímica utilizada para obtener información sobre procesos de transferencia de carga  y reacciones electroquímicas en la muestra. El principio de esta técnica consiste en establecer el potencial del electrodo de trabajo y monitorizar el corriente resultante en función del tiempo. La corriente se debe a procesos farádicos  provocados por el paso del potencial en los que hay transferencia de electrones. 
 
 
 
@@ -88,13 +88,13 @@ STM32CubeIDE integra las funcionalidades de configuración y creación de proyec
 
 
 
-
-
 ### viSens-S
 
 
 
 ### GitHub
+
+
 
 
 
@@ -108,11 +108,78 @@ STM32CubeIDE integra las funcionalidades de configuración y creación de proyec
 
 ### Flujos de Trabajo
 
+A continuación se presentan los diagramas de flujo de las diferentes funcionalidades del microcontrolador. 
+
+
+
+#### Voltametría cíclica
+
+Este diagrama de flujo  nos indica el funcionamiento del microcontrolador a la hora de realizar una voltametría cíclica. La función que nos permite hacer este tipo de medida es `get_CV_measure`. Esta función tendrá como input una estructura con diversos parámetros externos como el `eBegin`, `eVertex1`, `eVertex2`, objetivo de ciclos, `scanRate` y el `eStep`. Una vez obtenidos los parámetros se establecerá la variable voltaje objetivo a `eVertex1`, se fijará la tensión de celda a `VBegin` y se cerrará el relé para poder empezar la medición. También se reseteará y activará el timer del microcontrolador que controlará el tiempo de muestreo. 
+
+Una vez completados estos pasos el microcontrolador entrará en el flujo de medición. Cuando haya trascurrido el tiempo de muestro leerá el corriente y tensión de cela  y enviará esos datos al host mediante el protocolo de comunicación en serie I2C establecido en *MASBCOMM*. Una vez enviado los datos, comprobará si el voltaje de celda es igual al voltaje objetivo establecido previamente.
+
+ En caso negativo, aplicará un incremento de voltaje `eStep` al voltaje de celda y se volverá al principio a la espera de hacer otra medición. Es importante comentar que, si al aplicar el incremento el voltaje resultante es mayor que el voltaje objetivo, simplemente se establecerá el voltaje objetivo como voltaje de celda. 
+
+En caso afirmativo se comprobará cual es el voltaje objetivo. Si el `VObjetivo` es eVertex1 se establecerá el voltaje objetivo como `eVertex2` y se volverá a repetir todo el flujo anterior pero con el `VObjetivo` cambiado. Lo mismo pasará en el caso de que `VObjetivo` sea `eVertex2`, pero, estableciendo `VObjetivo` como `eBegin`. Finalmente si el voltaje objetivo es `eBegin` se comprobará si se han completado el número de ciclos establecidos. Si es así se cerrará el relé y se terminará la medición. Si aun no se ha cumplido el número de ciclos establecido, se cambiará `Vobjetivo` a `eVertex1` y volverá a repetirse todo este flujo. 
+
+```mermaid
+flowchart TD
+    A(get_CV_measure) -->|Obtener parametros de estructura CV| B(Establecer Vobjetivo a eVertex1)
+    B -->C(Fijar tensión Vcell a VBegin con DAC)
+    C --> D[Cerrar relé]
+    D -->E[Resetear y activar timer]
+    E --> F{Transcurrido tiempo de mostreo}
+    F --> |VERDADERO| G(Leer Vcell y Icell mediante ADC)
+    G --> H(Enviar datos mediante MASBCOMM)
+    H --> J{Vcell = VObjetivo}
+    J --> |VERDADERO| K{Vcell = eVertex1}
+    K --> |VERDADERO| S(VObjetivo = eVertex2)
+    S --> J
+    K --> |FALSO| L{Vcell = eVertex2}
+    L --> |VERDADERO| T(VObjetivo = eBegin)
+    T --> J
+    L --> |FALSO| M{Vcell = eBegin}
+ 	M --> |VERDADERO| N{ciclo actual = ciclos objetivo}
+ 	N --> |VERDADERO| O(Abrir relé)
+ 	N --> |FALSO| U(VObjetivo = eVertex1)
+ 	U --> J
+ 	J --> |FALSO| P{Vcell+ eStep >VObjetivo}
+ 	P --> |VERDADERO| Q(Establecer Vcell Vobjetivo)
+ 	Q --> F
+ 	P --> |FALSO| R(Sumar eStep a Vcell)
+ 	R --> F
+ 	
+
+ 
+```
+
+#### Cronoamperometría
+
+Este diagrama de flujo  nos indica el funcionamiento del microcontrolador a la hora de realizar una voltamperometría. La función que nos permite hacer este tipo de medida es `get_CA_measure`. Esta función tendrá como input una estructura con diversos parámetros externos como el tiempo de muestreo, el tiempo de medición y el valor a establecer para *Vcell*. Igual que en la medición de la voltametría, una vez obtenidos los parámetros se fijará la tensión de celda al valor establecido y se cerrará el relé para poder empezar la medición. También se reseteará y activará el *timer* del microcontrolador que controlará tanto el tiempo de muestreo como el tiempo total de la medida.
+Una vez encendido el *timer* y cerrado el relé se empezará con el flujo de medida. El microcontrolador estará esperando hasta que se complete el tiempo de muestreo. Una vez completado este se procederá a hacer la medida de la tensión y corriente de celda y se enviarán estos valores y el tiempo correspondiente al host mediante comunicación en serie I2C. Este proceso se irá repitiendo obteniendo tantos puntos como sea necesario hasta que se haya completado el periodo de medición. En este momento se saldrá del bucle de medición, se abrirá el relé y se pararán tanto los *timers* como el periférico encargado de hacer la lectura ADC.
+
+```mermaid
+flowchart TD
+    A(get_CA_measure) -->|Obtener parametros de estructura CA| B(Fijar tensión Vcell a eDC con DAC)
+    B --> C[Cerrar relé]
+    C -->D[Resetear y activar timer]
+    D --> E{Transcurrido tiempo de mostreo}
+    E --> |FALSO| E
+    E --> |VERDADERO| F(Leer Vcell y Icell mediante ADC)
+    F -->G(Enviar datos mediante MASBCOMM)
+    G --> H(Transcurrido el tiempo de medición)
+    H --> |FALSO| E
+    H --> |VERDADERO| I[ Parar timer y ADC ]
+    I --> J[Abrir relé ]
+```
+
 
 
 ### Desarrollo de las funciones
 
+<p style="text-align: justify;">Para la realización del trabajo nos hemos dividido las diferentes funcionalidades en paquetes de trabajo que hemos ido desarrollando en features diferentes. Una vez finalizado cada paquete de trabajo se hacía un merge con la rama develop para integrar los nuevos cambios. Una vez todos los cambios han sido integrados en la develop se ha han solucionado los errores de código presentes y finalmente se ha testeado el funcionamiento del potenciostato y del conjunto de operaciones. </p>
 
+A continuación se presenta una lista con los diferentes paquetes de trabajo utilizados y una breve descripción de cada uno de ellos. 
 
 ### Test
 
@@ -127,4 +194,3 @@ STM32CubeIDE integra las funcionalidades de configuración y creación de proyec
 
 
 ## Referencias
-
