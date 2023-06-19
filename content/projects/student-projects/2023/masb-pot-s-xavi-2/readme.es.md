@@ -88,19 +88,12 @@ STM32CubeIDE integra las funcionalidades de configuración y creación de proyec
 
 
 
-### viSens-S
-
-
-
 ### GitHub
 
 
+GitHub es una plataforma de desarrollo colaborativo que permite a los programadores y desarrolladores de software compartir, colaborar y versionar su código fuente. Actuando como un repositorio en línea, GitHub proporciona herramientas y funcionalidades para la gestión de proyectos, control de versiones y seguimiento de problemas, lo que facilita la colaboración y el trabajo en equipo. 
 
-
-
-### Componentes frond-end
-
-
+Esta plataforma ha sido esencial para la gestionar la información de cada una de las ramas, realizar un seguimiento de los cambios realizados y mantener un historial completo de los desarrollos realizados a lo largo del proyecto. 
 
 
 
@@ -109,8 +102,6 @@ STM32CubeIDE integra las funcionalidades de configuración y creación de proyec
 ### Flujos de Trabajo
 
 A continuación se presentan los diagramas de flujo de las diferentes funcionalidades del microcontrolador. 
-
-
 
 #### Voltametría cíclica
 
@@ -181,16 +172,30 @@ flowchart TD
 
 A continuación se presenta una lista con los diferentes paquetes de trabajo utilizados y una breve descripción de cada uno de ellos. 
 
-### Test
-
+- `feature/stm32main`: Esta es la rama que contendra el codigo donde se especifica que hace el setup y el loop. Es aqui donde se inicializa el programa entero, y donde se leen las intrucciones para llevar a cabo las tareas necesarias.
+- ``feature/chronoamperometry``: En esta rama se describen las tareas a realizar respecto a la cronoamperometria, vease, su flujo de trabajo descrito anteriormente.
+- ``feature/cyclic_voltametry``: En esta rama se describen las tareas a realizar respecto a la voltametria ciclica, vease, su flujo de trabajo descrito anteriormente.
+- ``feature/ADC``: En esta rama, las diferentes funciones del ADC son descritas para su uso en las ramas de las funciones de cronoamperometira y coltameria ciclica, como por ejemplo, el calculo de voltaje y corriente a partir de las señales leidas en los pines determinados.
+- ``feature/PMU``: En esta rama, las diferentes funciones del PMU son descritas para su uso en las ramas de las funciones de cronoamperometira y coltameria ciclica, mas concretamente, de dar corriente alla donde sea necesario.
+- ``feature/rele``: En esta rama, las diferentes funciones del relé son descritas para su uso en las ramas de las funciones de cronoamperometira y coltameria ciclica, mas concretamente, funciones que describen como abrir y cerrar el relé.
+- ``feature/timers``: En esta rama, las diferentes funciones del timer son descritas para su uso en las ramas de las funciones de cronoamperometira y coltameria ciclica, entre ellas se encuentran las funciones que nos permiten establecer periodos de tiempo, necesarios para el flujo de trabajo de lectura de la cronoamperometira y la coltameria ciclica.
+- ``hotfix/develop``: En esta rama se resolvieron los diferentes errores ocasionados por el merge de todas las features en la rama `develop`.
+- ``hotfix/stm32main``:En esta rama se resolvieron diferentes problemas relacionados con el flujo de trabajo del ``stm32main.c`` entre otros.
+- ``hotfix/timers``: En esta rama se resolvió un problema relacionado con la declaracion de variables en el fichero `timers.c`
 
 
 ## Resultados
 
+En este apartado se describen los resultados obtenidos una vez finalizado el programa. Cabe remarcar que el programa, pese haberse determinado como acabado, no era funcional, por los motivos descritos en el siguiente subapartado.
 
+### Test
+
+Debido a diversos problemas que no se pudieron detectar, no fue posible llevar a cabo el testeo, ya que cuando se intentaba conectar el microcontrolador al programa viSens, este motraba una gráfica en blanco cosa que nos llevó a pensar que existia un problema en la recepción de datos del programa. Pero tras una revisión exhaustiva, se desestimó esta opción ya que se confirmó que el programa recibía bien los datos, y por tanto el problema debía de originarse por otro motivo. Al final, no fue posible determinar el origen del problema, y por tanto no se pudo testear el programa como debía haberse hecho.
 
 ## Conclusiones
 
+Una vez realizado el proyecto, podemos extraer diversas conclusiones sobre el trabajo realizado:
 
-
-## Referencias
+- Realizar un proyecto como este es de un calibre mayor al esperado. Pese a haber pasado por una preparación previa de 4 meses, programar un potenciostato requiere de mucho tiempo y esfuerzo, donde pueden aparecer problemas complicados en diferentes estadios del proyecto.
+- El uso de Git para controlar versiones de un programa, y trabajar en proyectos relacionados con el desarroyo de programas es esencial debido a todas las facilidades y trazabilidad que proporciona a los usuarios.
+- Pese a no haber conseguido desarroyar un programa funcional, la experiencia adquirida de haber intentado realizar un proyecto asi es sorprendente, de la misma forma que la experiencia y conocimientos adquiridos a lo largo de las diferentes lecciones de la asignatura.

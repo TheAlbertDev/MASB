@@ -3,332 +3,200 @@ project: 'potentiostat'
 students:
   - name: 'Xavier Ullastre'
     linkedin: 'xavier-ullastre-4613a5225'
-    picture: 'assets/imgs/ruben-cuervo-noguera.jpg'
   - name: 'Antonio Javier Gomez'
     linkedin: 'antonio-javier-gomez-asencio-4075bb23a'
-    picture: 'assets/imgs/pere-pena-pujos.jpg'
 repo: 'https://github.com/Biomedical-Electronics/masb-pot-s-xavi-2'
 date: 2023-06-13
 language: 'en'
 title: 'MASB xavi2 project: Programming a Potentiostat'
 ---
+<p style="text-align: justify;">Below is a detailed description of the project carried out by two students of Biomedical Engineering at the University of Barcelona (UB) in the elective course of Microcontrollers for Biomedical Applications and Systems. Xavier Gómez Asencio and Xavier Ullastre Buscá have developed the algorithm for the STM32F401 Nucleo-64 microcontroller that allows for two different types of measurements, cyclic voltammetry and chronoamperometry, using a potentiostat. The project also includes the control of the microcontroller through a set of specific instructions and the visualization of the data obtained using ViSens-S. In the following sections, we will go into more detail on the different steps followed for the development of the project and present the results obtained. </p>
 
-# Content
+## Table of contents
 
-- [Introduction](#Intro)
-  - [Potentiostat](#Potentiostat)
-  - [Cyclic voltammetry](#VC)
-  - [Chronoamperometry](#CA)
-- [MASB-POT-S Project](#Project)
-  - [Objectives](#Obj)
-  - [viSens-S Application](#Visens)
-  - [Pinout](#Pin)
-  - [Project Components](#PC)
-  - [MASB-COMM-S communication protocol](#prot)
-  - [Timers](#timers)
-  - [Flowcharts](#FC)
-  - [Project Development](#development)
-  - [Testing phase](#testing)
-- [Results](#results)
-- [Conclusions](#conclusions)
-- [References](#references)
+[TOC]
 
 
-# Introduction <a name="Intro"></a>
+## Objectives
 
-In this report, the Biomedical Engineering students from University of Barcelona [Rubén Cuervo](https://www.linkedin.com/in/rubencn/) and [Pere Pena](https://www.linkedin.com/in/pere-pena-puj%C3%B3s-02a7621ba/) will be presenting the final project of the subject _Microcontrollers for Biomedical Applications and Systems_ carried out during the spring of 2022.
+<p style="text-align: justify;">As mentioned earlier, the main objective of the project is the programming of a potentiostat using the STM32 Nucleo-64 board and the STM32Cube IDE, for the control and acquisition of cyclic voltammetry and chronoamperometry measurements. </p>
 
-This work, entitled **Programming a potentiostat**, consists of programming a STM32 Nucleo-F401RE board in the `STM32CubeIDE` environment for the creation of a potentiostat capable of performing two types of crucial electrochemical measurements in the field of biomedical sensors: **cyclic voltammetry** and **chronoamperometry**. More specifically, we present all the technical details of its programming as well as its validation stage using a sample of potassium ferrocyanide (K4[Fe(CN)6]) in a potassium chloride (KCl) buffer at different concentrations. For its creation, a version control has been performed by the members of the team through GitHub, also providing the final result in [open virtual repository](https://github.com/Biomedical-Electronics/masbstat-arvak) format for its complete replication.
+For the successful completion of this project, the following subobjectives have been defined:
 
-## Potentiostat <a name="Potentiostat"></a>
+- Control and creation of the instruction set.
+- Control of the *Power Management Unit* (PMU) of the potentiostat's *front-end* module.
+- Use ADC and DAC to read and set the corresponding voltages and currents.
+- Implement timers of the microcontroller to manage measurement and sampling times.
+- Creation and programming of the execution flow for cyclic voltammetry.
+- Creation and programming of the execution flow for chronoamperometry.
+- Communicate with the viSens-S application through I2C serial communication.
+- Test the proper functioning of both the code and the final application.
 
-A potentiostat is the key electronic _hardware_ to control a cell with three electrodes (reference (RE), working (WE) and auxiliary (CE)) in order to execute most electroanalytical experiments, such as Cyclic Voltammetry or Chronoamperometry [[1]](#references). To achieve this, each of the electrodes has the following functionalities:
-- **Working electrode:** Place where the electrochemical reaction is taking place.
-- **Reference electrode:** Monitors the potential of the solution.
-- **Auxiliary Electrode:** Supplies the necessary current to balance the electrical flow created in the working electrode.
-In this way, the device controls the voltage between the working and reference electrodes by adjusting the current flowing in the auxiliary electrode to extract relevant information from the chemical sample that we introduce.
-![Schematic of a potentiostat.](assets/imgs/Potenciostat.png)
+## Theoretical Framework
 
-For this project, the potentiostat was created using a printed circuit (_PCB_) that works coupled to the STM32 Nucleo-F401RE board to perform electrochemical measurements.
-
-## Cyclic voltammetry <a name="VC"></a>
-
-**Cyclic Voltammetry (CV)** is one of the most popular and widely used electrochemical measurements, especially to investigate oxidation and reduction processes. During this test, a **time-varying potential** is applied between WE and RE while **current** is measured across WE [[2]](#references). More specifically, the sweep takes place between two known voltage extremes (vertex), first varying the potential value until reaching the first extreme and then repeating the process in reverse until reaching the other extreme. This sweep from vertex to vertex can be performed for a number of cycles determined to obtain the desired information.
-
-The result is represented in a **cyclic voltammogram**, where the **x-axis** shows the applied potential (E), since it is the variable that we impose on the system, while in the **y-axis** the resulting intensity (i) is represented. In **Fig. 2** you can see an example of a Cyclic Voltagram.
-
-![Cyclic Voltogram (extracted from <a href="https://sop4cv.com/chapters/WhatIsCyclicVoltammetry.html" >Source</a>).](assets/imgs/Cyclic_voltammogram.png)
-
-## Chronoamperometry <a name="CA"></a>
-
-**Chronoamperometry (CA)** is another of the most used electrochemical measurements, especially to know the composition and diffusive behavior of the analyte of interest placed in the cell. During this test, a **step potential** is applied on the WE while **current** is measured in the cell for a certain period of time [[3]](#references). To obtain a good result, this step signal should change the state of the cell from a stable situation to a situation where faradaic processes (charge transfers at its interface) occur.
-
-The result is plotted on a graph, where the **x-axis** shows the elapsed time (t), and the **y-axis** shows the resulting intensity (i). In **Fig. 3** you can see an example of this test with the voltage step applied at its side.
-
-![Chronoamperometry result (right) with step voltage applied (left) (extracted from <a href="https://chem.libretexts.org/Bookshelves/Analytical_Chemistry/Supplemental_Modules_%28Analytical_Chemistry%29/Analytical_Sciences_Digital_Library/JASDL/ Courseware/Analytical_Electrochemistry%3A_The_Basic_Concepts/04_Voltammetric_Methods/A._Basics_of_Voltammetry/01_Potential_Step_Methods/a%29_Chronoamperometry" >Source</a>).](assets/imgs/chronoamp.png)
-
-# MASB-POT-S Project <a name="Project"></a>
-
-
-## Objectives <a name="Obj"></a>
-
-The objectives of the **MASB-POT-S project** are:
-- Programming a portable potentiostat using the `STM32CubeIDE` programming environment.
-- Check all the components of the _front-end_ module of the potentiostat.
-- Communicate with the viSens-S application installed with the _host_ or computer through the MASB-COMM-S protocol.
-- Test our system by performing a cyclic voltammetry.
-- Test our system by performing a chronoamperometry.
-
-## viSens-S application <a name="Visens"></a>
-
-In order to select which electrochemical test to perform, in addition to showing the results obtained during them, the viSens-S application was utilized. viSens-s is a program created entirely with LabVIEW that allows to:
-- Select the port where our STM32 Nucleo-F401RE board is connected.
-- Select the technique to perform (cyclic voltammetry or chronoamperometry)
-- Within cyclic voltammetry, be able to determine:
-  * `eBegin:` cell potential at which cyclic voltammetry starts and ends.
-  * `eVertex1:` potential that the electrochemical cell drives to from the starting potential.
-  * `eVertex2:` potential to which the electrochemical cell is directed from the vertex of potential 1 (second extreme). Its continuation depends on whether the established number of cycles has been reached or not.
-  * `cycles:` number of cycles of the cyclic voltammetry.
-  * `scanRate:` variation of the electrochemical cell voltage over time (V/s).
-  * `eStep:` increase/decrease of the voltage between two consecutive points (V).
-- Within chronoamperometry, be able to determine:
-  * `eDC:` constant potential (step) of the electrochemical cell during chronoamperometry (V).
-  * `samplingPeriodMs:` time in milliseconds between samples.
-  * `measurementTime:` chronoamperometry duration in seconds.
-
-All this is achieved with the graphical interface shown in **Fig. 4**.
-
-![viSens-S GUI.](assets/imgs/visenss.png)
-
-## Pinout <a name="Pin"></a>
-
-To interact correctly with the front-end (_PCB_) of the potentiostat, the pins used were the following:
-
-| Pin | Alias | Type | Description|
-| :-: | :---: | :-: | :-|
-| PA0 | FVREF | Analog input | Absolute voltage of the (RE) V<sub>REF</sub> used for the measurement of V<sub>CELL</sub>.|
-| PA1 | ICELL | Analog input | TIA output voltage used for I<sub>CELL</sub> measurement.|
-| PB8 | SCK | I<sup>2</sup>C (SCK) | SCK signal from the I<sup>2</sup>C.|
-| PB9 | SDA | I<sup>2</sup>C (SDA) | SDA signal from the I<sup>2</sup>C.|
-| PA5 | ON | digital output | PMU (dis)enable signal.<br>`0`: PMU disabled. `1`: PMU enabled.|
-| PB5 | RELAYS | digital output | Relay control signal.<br>`0`: Relay open. `1`: Relay closed.|
-
-## Components of the project <a name="PC"></a>
-
-The modules of the _PCB_ that we needed to program with the microcontroller so that the measurements were taken accurately were:
-
-### Power Management Unit (PMU)
-
-The **PMU** is responsible for **powering** the entire front-end. By default, it starts disabled so that the circuit does not consume current until the EVB is connected to our computer. When this happens, its pin will be swithced to high level and we will wait 500 ms to ensure that all the components of the device are properly powered. To check if it is on or off, it can be observed by means of a light indicator (LED) that will iluminate red when it is enabled.
-
-During this project, its management has been done in the `initialize_PMU()` function of the `PMU.c` document that is called in **setup**.
-
-### Relay
-
-The relay is responsible for opening and closing the circuit between the front-end and the electrochemical sensor where the measurements will be made. In this way, when the relay is open, there is no electrical connection between the sensor and the front-end and when it is closed, there is. Its opening/closing will also be accompanied by an LED that will light up green in addition to the characteristic sound of a relay status change.
-
-During this project, its management has been done using the HAL function `HAL_GPIO_WritePin()` before (*SET*) and after (*RESET*) the measurements were made.
+Once the objectives have been defined, this section briefly describes the main contexts related to the project in order to understand each part of it.  
 
 ### Potentiostat
+A potentiostat is an electronic device used in the field of electrochemistry to control and measure electrical potentials of an electrochemical cell, an experimental device used to generate electricity through a redox reaction.
 
-In the MASB-POT-S project, a DAC (*Digital Analog Converter*) with I2C communication was used to replicate the potentiostat to set the VCELL voltage. This could produce an output voltage of 0 to 4 V, which is converted from -4 to 4 V by placing an additional stage.
+The potentiostat consists of three electrodes. Firstly, there is the working electrode, which is in direct contact with the sample or electrochemical solution being analyzed and maintains a constant potential. The second electrode is called the reference electrode and establishes the reference potential for the measurement. Finally, the auxiliary electrode completes the electrical circuit, allowing the flow of current.
 
-To read the voltage and current values ​​in the cell, the ADC (*Analog Digital Converter*) of the microcontroller was used. For the voltage, the tension present in the reference electrode (RE) is read and for the current, a TIA (*Transimpedance Amplifier*) with a resistance of 50 kΩ is used. This reading would provide us with the VADC and IADC values, which must be converted using the formulas found in the `formulas.c` file (more specifically in the `calculateVrefVoltage` and `calculateIcellCurrent` functions) to obtain the voltage and current values in the cell (VCELL and ICELL respectively).
+This system works by maintaining the potential of the working electrode at a constant level relative to the reference electrode through the application of a control voltage or current with the auxiliary electrode. By keeping the potential between the working electrode and the reference electrode constant, the current generated in the electrochemical cell in response to that potential can be measured.
 
-## Communication protocol MASB-COMM-S <a name="prot"></a>
+![](C:\microcontrolers\MASB\content\projects\student-projects\2023\masb-pot-s-xavi-2\assets\imgs\Potentiostato.png)
 
-To perform the communication between the *master* (viSens-S) and the *slave* (device) we follow a protocol where the encoding and decoding of messages are carried out following the [COBS](http://www.stuartcheshire.org/papers/COBSforToN.pdf) (Consistent Overhead Byte Stuffing) algorithm , having as term char the value 0x00 and where the bytes of the values ​​sent are sent in *little endian* notation. Also, the command bytes used are as follows:
+One of the main uses of the potentiostat is the application of different electrochemical measurement techniques, including cyclic voltammetry and chronoamperometry. These techniques allow obtaining information about the electrochemical properties of a sample, such as the concentration of chemical species or the kinetics of electrochemical reactions.
 
-| Value | Instruction | Description |
-| :---: | :-----------: | :---------------------------------------------------------- |
-| 0x01 | START_CV_MEAS | It provides the parameters of a cyclic voltammetry and starts it. |
-| 0x02 | START_CA_MEAS | It provides the parameters of a chronoamperometry and starts it. |
+### Cyclic voltametry
 
-The packages of *bytes* sent are formed by the command (previous table) followed by a series of auxiliary *bytes* (parameters). When the *slave* communicates with the *master*, the parameters are those necessary to make the graphs of the measurements:
-- `point:` identification number of the point.
-- `timeMs:` milliseconds elapsed since the start of the measurement.
-- `voltage:` VCELL in volts.
-- `current:` ICELL in amperes.
 
-While when the *master* communicates with the *slave*, the parameters are those mentioned in the section [Application viSens-S](#Visens).
+Cyclic voltammetry (CV) is a potentiodynamic electrochemical technique commonly used to investigate the properties of a sample in solution or adsorbed molecules on the electrode by measuring the reduction potential. In a CV experiment, the potential of the working electrode is varied linearly with time, and the current is monitored through a circuit. After reaching the set potential, the potential of the working electrode is reversed in the opposite direction to return to the initial potential, generating cycles of potential ramps.
 
-## Timers <a name="timers"></a>
+The measured current is recorded and plotted as a function of the applied voltage, resulting in a cyclic voltammogram.
 
-To ensure that the measurements were done accurately following the values ​​sent by the *host*, timer 3 was used, preconfigured through STM32MX. More specifically, in the `timers.c` file, 2 functions were created to be able to operate with it:
-- `initialize_timer: ` We configure timer 3 of the microcontroller with the sampling period indicated by the *host* through the `__HAL_TIM_SET_AUTORELOAD` function, where this value is multiplied by 10 to convert it into seconds taking into account the default frequency (10 KHz). For better understanding, go to the [code](https://github.com/Biomedical-Electronics/masbstat-arvak). Later, we initialize it with the `__HAL_TIM_SET_COUNTER` and `HAL_TIM_Base_Start_IT` functions.
-- `HAL_TIM_PeriodElapsedCallback:` Once the determined sampling period has elapsed, the action of measuring VCELL and ICELL of the ADC would be performed automatically (thus making the measurements accurately).
+![](C:\microcontrolers\MASB\content\projects\student-projects\2023\masb-pot-s-xavi-2\assets\imgs\vc_grafico.png)
 
-## Flowcharts <a name="FC"></a>
 
-Once all the main points to program the potentiostat have been commented, we will show the flowcharts that exemplify how the main sections of our code work.
 
-### Microcontroller
+In the figure above, we can see the result of a cyclic voltammetry. The two peaks correspond to the oxidation and reduction peaks of the sample. The peaks and the shapes of cyclic voltammograms can indicate reversible or irreversible electrochemical reactions, the presence of redox species, analyte concentrations, reaction kinetics, adsorption/desorption of molecules on the electrode surface, among other parameters.
 
-The first flowchart shows the general operation of the microcontroller to read and execute the instructions.
+### Chronoampetometry
 
-```mermaid
-graph TD
-    A(Start) --> B(Configuration of peripherals and initialization of variables)
-    B --> C(Waiting for next instruction)
-    C --> D{Instruction Received}
-    D -->|False| D
-    D -->|True| E{Instruction}
-    E -->|START_CA_MEAS| F(Perform Chronoamperometry)
-    E -->|START_CV_MEAS| G(Perform Cyclic Voltammetry)
-    E -->|Default| C
-    F --> C
-    G --> C
-```
+On the other hand, chronoamperometry is an electrochemical technique used to gather information about charge transfer processes and electrochemical reactions in the sample. The principle of this technique involves setting the potential of the working electrode and monitoring the resulting current as a function of time. The current is due to faradaic processes caused by the potential step, in which electron transfer occurs.
 
-### Cyclic Voltammetry
 
-Subsequently, we show the detailed flowchart of the code that allows performing cyclic voltammetry.
 
-```mermaid
-graph TD
-    A(Home) --> B(Get CV Settings)
-    B --> C(Set VCELL to eBegin)
-    C --> D(vTarget = eVertex1)
-    D --> E(Close relay)
-    E --> K(Delay 10ms)
-    K --> L{vTarget>eVertex2}
-    L -->|False| M(sign = -1)
-    L -->|True| N(sign = 1)
-    N --> F{Elapsed Sampling Period}
-    M --> F
-    F -->|False| F
-    F -->|True| G(Measure VREAL and ICELL)
-    G --> H(Send data)
-    H --> I{VCELL == vTarget}
-    I -->|False| J{"(VCELL+sign*eStep-vTarget)*sign > 0"}
-    J -->|False| OR{VCELL = VCELL+sign*eStep}
-    J -->|True| P{VCELL = vTarget}
-    OR --> F
-    P --> F
-    I -->|True| Q{vTarget == eVertex1}
-    Q -->|True| R(vTarget = eVertex2)
-    R --> S(sign = -sign)
-    S --> I
-    Q -->|False| T{vTarget == eVertex2}
-    T -->|True| U(vTarget = eBegin)
-    U --> V(sign = -sign)
-    V --> I
-    T -->|False| W{Last Cycle}
-    W -->|True| X(Open relay)
-    X --> Z(End)
-    W -->|False| AND(vTarget = eVertex1)
-    Y --> I
-```
+## Materials and tools
 
-Two important points to note are that we have added an additional delay of 10 ms when closing the relay to avoid reading a null value right at the beginning of the test and the implementation of the handling of the case in which `eVertex1 < eBegin < eVertex2` (beginning the test in reverse direction). Moreover, the `sampling period` mentioned in the flowchart can be found using: $ts=\frac{eStep}{scanRate}$.
+In this section, we will explain the main hardware elements as well as the different software tools or project control used. We will also describe the main components of the microcontroller's front-end that are used for the specific application.
 
-### Chronoamperometry
-Finally, this is the detailed flowchart of the code that allows the chronoamperometry to be performed.
+### STM32F401 Nucleo-64
+
+For the realization of this project, we will use the Evaluation Board (EVB) STM32 Nucleo-F401RE from STMicroelectronics, which uses the STM32F401RET6U microcontroller from the same manufacturer. This board offers users an affordable and flexible way to test new concepts and build prototypes by choosing from the different combinations of features and power consumption offered by the microcontroller. Therefore, it is a perfect board for users to get started in the world of microcontroller development.
+
+Below is a figure that shows the EVB and all its components and pins.
+
+![](C:\microcontrolers\MASB\content\projects\student-projects\2023\masb-pot-s-xavi-2\assets\imgs\EVB_STM32F401.jpg)
+
+One of the advantages of this EVB is that it exposes all the pins of the microcontroller, making it easier to connect with external components during prototyping.
+
+### STM32Cube IDE
+
+STM32CubeIDE is an advanced C/C++ development platform with peripheral configuration, code generation, code compilation, and debugging features for STM32 microcontrollers and microprocessors. It allows for the integration of numerous existing plugins.
+
+STM32CubeIDE combines the configuration and project creation functionalities of STM32CubeMX to provide an all-in-one tool experience, saving installation and development time. After selecting an STM32 MCU or MPU, whether it's a blank device or a pre-configured microcontroller or microprocessor, choosing a board or an example, the project is created, and initialization code is generated. At any point during development, the user can revisit the initialization and peripheral or middleware configuration and regenerate the initialization code without affecting the user's code.
+
+### GitHub
+
+
+GitHub is a collaborative development platform that allows programmers and software developers to share, collaborate, and version their source code. Acting as an online repository, GitHub provides tools and functionalities for project management, version control, and issue tracking, facilitating collaboration and teamwork.
+
+This platform has been essential for managing the information of each branch, tracking changes made, and maintaining a complete history of the developments carried out throughout the project.
+
+
+
+## Methods
+
+### Workflows
+
+Below are the flowcharts depicting the different functionalities of the microcontroller.
+
+
+
+#### Cyclic voltametry
+
+This flowchart illustrates the operation of the microcontroller when performing a cyclic voltammetry. The function responsible for this type of measurement is `get_CV_measure`. This function takes an input structure with various external parameters such as `eBegin`, `eVertex1`, `eVertex2`, cycle target, `scanRate`, and `eStep`. Once these parameters are obtained, the target voltage will be set to `eVertex1`, the cell voltage will be set to `VBegin`, and the relay will be closed to start the measurement. The microcontroller's timer, which controls the sampling time, will also be reset and activated.
+
+Once these steps are completed, the microcontroller enters the measurement flow. After the sampling time has elapsed, it will read the current and cell voltage and send this data to the host using the I2C serial communication protocol established in *MASBCOMM*. After sending the data, it will check if the cell voltage is equal to the previously set target voltage.
+
+If it is not equal, an increment of `eStep` will be applied to the cell voltage, and the process will return to the beginning, waiting to perform another measurement. It is important to note that if the resulting voltage after the increment is higher than the target voltage, the target voltage will be set as the cell voltage.
+
+If the cell voltage is equal to the target voltage, it will check what the target voltage is. If the `VTarget` is `eVertex1`, the target voltage will be set to `eVertex2`, and the entire previous flow will be repeated with the changed `VTarget`. The same applies if the `VTarget` is `eVertex2`, but this time it will be set to `eBegin`. Finally, if the target voltage is `eBegin`, it will check if the specified number of cycles has been completed. If so, the relay will be opened, and the measurement will end. If the number of cycles has not been completed, the `VTarget` will be changed to `eVertex1`, and the entire flow will be repeated.
 
 ```mermaid
-graph TD
-    A(Home) --> B(Get Configuration from CA)
-    B --> C(Set VCELL to eDC)
-    C --> D(Close relay)
-    D --> E(Delay 10ms)
-    E --> F{Elapsed Sampling Period}
-    F -->|False| F
-    F -->|True| G(Measure VREAL and ICELL)
-    G --> H(Send Data)
-    H --> I{Elapsed measurementTime}
-    I -->|False| F
-    I -->|True| J(Open relay)
-    J --> K(End)
+flowchart TD
+    A(get_CV_measure) -->|Obtener parametros de estructura CV| B(Establecer Vobjetivo a eVertex1)
+    B -->C(Fijar tensión Vcell a VBegin con DAC)
+    C --> D[Cerrar relé]
+    D -->E[Resetear y activar timer]
+    E --> F{Transcurrido tiempo de mostreo}
+    F --> |VERDADERO| G(Leer Vcell y Icell mediante ADC)
+    G --> H(Enviar datos mediante MASBCOMM)
+    H --> J{Vcell = VObjetivo}
+    J --> |VERDADERO| K{Vcell = eVertex1}
+    K --> |VERDADERO| S(VObjetivo = eVertex2)
+    S --> J
+    K --> |FALSO| L{Vcell = eVertex2}
+    L --> |VERDADERO| T(VObjetivo = eBegin)
+    T --> J
+    L --> |FALSO| M{Vcell = eBegin}
+ 	M --> |VERDADERO| N{ciclo actual = ciclos objetivo}
+ 	N --> |VERDADERO| O(Abrir relé)
+ 	N --> |FALSO| U(VObjetivo = eVertex1)
+ 	U --> J
+ 	J --> |FALSO| P{Vcell+ eStep >VObjetivo}
+ 	P --> |VERDADERO| Q(Establecer Vcell Vobjetivo)
+ 	Q --> F
+ 	P --> |FALSO| R(Sumar eStep a Vcell)
+ 	R --> F
+ 	
+
+ 
 ```
-In this section we have also added an additional delay of 10 ms when closing the relay to avoid reading the value of 0 A right at the beginning of the test.
 
-## Project development <a name="development"></a>
+#### Chronoampetometry
 
-To achieve all the features described, our team worked using version control on GitHub. To make it possible, from the **master** branch (the initial one that we would finally use to present our project) we create the **develop** branch to fully develop our code. More specifically, we split that branch into small forks to add each feature (_feature_) as well as fix bugs in the code (_hotfix_).
+This flowchart indicates the operation of the microcontroller when performing a chronoamperometry measurement. The function responsible for this type of measurement is `get_CA_measure`. This function takes an input structure with various external parameters such as sampling time, measurement time, and the value to set for *Vcell*. Similar to the voltammetry measurement, once these parameters are obtained, the cell voltage will be set to the specified value, and the relay will be closed to start the measurement. The microcontroller's timer, which controls both the sampling time and the total measurement time, will also be reset and activated.
 
-- **`feature/adc`**: *ADC* configuration to read current and voltage values ​​(_Analog to digital converter_).
-- **`feature/timer`**: general configuration of the *timer* of the project that will receive the sampling period and will carry out the ISR when a period is completed.
-- **`feature/PMU`**: general configuration of the *Power Management Unit* to power the PCB.
-- **`feature/cyclic_voltammetry`**: complete configuration of cyclic voltammetry using the previously created features (*ADC*, *timer* and *PMU*).
-- **`feature/chronoamperometry`**: complete configuration of the chronoamperometry using the previously created features (*ADC*, *timer* and *PMU*).
-- **`hotfix/cyclic_voltammetry`, `hotfix/timer` and `hotfix/chronoampreometry`**: branches created to correct unwanted behaviors of the *timer*, *cyclic voltammetry* and *chronoampreometry* features.
-- **`feature/flow`**: configuration of the main potentiostat control code following the flow chart in the Microcontroller section.
+Once the *timer* is activated and the relay is closed, the measurement flow will begin. The microcontroller will wait until the sampling time is completed. Afterward, it will proceed to measure the cell voltage and current, and these values, along with the corresponding time, will be sent to the host using I2C serial communication. This process will be repeated, obtaining as many data points as necessary until the measurement period is completed. At this point, the measurement loop will be exited, the relay will be opened, and both the *timers* and the ADC reading peripheral will be stopped.
 
-Progressively, all the branches were joined to the development branch (**develop**), verifying that when the sections of both members of the group were joined, no errors appeared. Finally, once we had the functional code, a Pull Request was made to the main branch (**master**) to deliver it to the client. The evolution of all these branches together with the date of their completion can be seen schematically in **Fig. 5**.
-
-![Project network.](assets/imgs/network.png)
-
-
-## Testing phase <a name="testing"></a>
-
-To make sure our potentiometer worked properly, we created a simple circuit that did not require placing any chemical sample in an electrode. The circuit schematic can be found in **Fig. 6** and its assembly and connection with the STM32 Nucleo-F401RE board in **Fig. 7**.
-
-![Test circuit schematic.](assets/imgs/Trial_circuit.png)
-![Assembly of the test circuit.](assets/imgs/circuit.jpg)
-
-### Cyclic voltammetry
-
-With the circuit created, for cyclic voltammetry we expected to find a **sweep between `evertex1` and `evertex2` drawing a straight line with a positive slope**. More specifically, this line would represent how the intensity rises or decays linearly depending if we move to increasing or decreasing potentials, respectively. This relationship is due to **Ohm's law**:
-
-$$
-I=\frac{V}{R}
-$$
-<center><b>Eq.1:</b> Ohm's Law</center>
-
-And the slope found is the inverse of the resistance.
-
-During the work, this functionality was tested following the steps shown in the flowchart, improving all the deviations from the ideal behavior found. In **Fig. 8** the result can be observed for an initial voltage of 0.25 V, vertices of +0.5 V and -0.5 V, 2 cycles, a scanning rate of 0.1 V/s and an increase/decrease of the voltage between two consecutive points of 0.01V
-
-![Cyclic voltammetry without sample.](assets/results/CV_No_Sample.png)
-
-### Chronoamperometry
-
-In chronoamperometry, also due to Ohm's Law, we expected to find a constant current resulting from the applied step voltage. This result was more easily found due to the lower difficulty of the test, and in **Fig. 9** you can find the resulting graph after performing the test with a step voltage of +0.6 V, a sampling period of 10 ms and a test time of 10 seconds.
-
-![Chronoamperometry without sample.](assets/results/CA_No_Sample.png)
-
-In this case, the result is a constant current at 312 mA, but due to the reduced range of the lateral scale of the viSens-S application, we find some fluctuation around that value. Even so, the test was considered valid due to the small magnitude (0.2 μA) of this variation.
+```mermaid
+flowchart TD
+    A(get_CA_measure) -->|Obtener parametros de estructura CA| B(Fijar tensión Vcell a eDC con DAC)
+    B --> C[Cerrar relé]
+    C -->D[Resetear y activar timer]
+    D --> E{Transcurrido tiempo de mostreo}
+    E --> |FALSO| E
+    E --> |VERDADERO| F(Leer Vcell y Icell mediante ADC)
+    F -->G(Enviar datos mediante MASBCOMM)
+    G --> H(Transcurrido el tiempo de medición)
+    H --> |FALSO| E
+    H --> |VERDADERO| I[ Parar timer y ADC ]
+    I --> J[Abrir relé ]
+```
 
 
-# Results <a name="results"></a>
 
-To conclude the validation of our hardware, it was tested using a sample of potassium ferrocyanide (K4[Fe(CN)6]) in a potassium chloride (KCl) buffer at different concentrations. This was done by attaching a test strip with an electrode (**Fig. 11**) to the hardware and subsequently placing the samples with 1mM and 5mM KCl buffers using a pipette (in separate strips). The test was carried out entirely in the Biomedical Engineering Laboratory of the University of Barcelona.
+### Development of the functions
 
-![Sample deposition using a pipette.](assets/imgs/experiment.jpg)
-![Sensor strip with sample attached.](assets/imgs/electrode_with_sample.jpg)
+<p style="text-align: justify;">For the completion of the project, we divided the different functionalities into work packages, which were developed in separate features. Once each work package was completed, a merge was performed with the `develop` branch to integrate the new changes. After all the changes were integrated into `develop`, code errors were addressed, and finally, the functionality of the potentiostat and the overall operations were tested.<p>
 
-## Cyclic voltammetry
+Below is a list of the different work packages used, along with a brief description of each:
 
-Regarding cyclic voltammetry, the measurements were taken for both cases starting the voltage at 0.7 volts and setting the vertices at 0.8 and -0.1 V. In addition, it was determined that 4 cycles needed to be performed, with a scan rate of 0.1 V/s and an increase/decrease of the voltage between two consecutive points of 0.01 V.
-
-The results obtained can be seen in **Figures 12 and 13**, verifying that they correctly follow the form described in the introduction and that there is some variation between the samples of 1 mM and 5 mM concentration, being able to distinguish them.
-
-
-![Cyclic voltammetry results with the 1 mM (left) and 5 mM (right) sample using Visens-s.](assets/results/Visens_CV.png)
-![Results of cyclic voltammetry with both samples overlapped.](assets/results/CV_Sample_en.png)
-
-## Chronoamperometry
-
-To perform the chronoamperometry, a step signal of 0.1 V was applied and its effect on the current was measured for 10 seconds with a period of 100 ms. The results obtained can be seen in **Figures 14 and 15**, verifying that they correctly follow the form described in the introduction and that there is some variation between the samples of 1 mM and 5 mM concentration, being able to classify them.
+- `feature/stm32main`: This branch contains the code specifying the setup and loop. It is where the entire program is initialized, and instructions are read to carry out the necessary tasks.
+- `feature/chronoamperometry`: This branch describes the tasks related to chronoamperometry, as previously described in the workflow.
+- `feature/cyclic_voltammetry`: This branch describes the tasks related to cyclic voltammetry, as previously described in the workflow.
+- `feature/ADC`: In this branch, the different ADC functions are described for use in the chronoamperometry and cyclic voltammetry functions, such as voltage and current calculation based on the signals read from specified pins.
+- `feature/PMU`: In this branch, the different PMU functions are described for use in the chronoamperometry and cyclic voltammetry functions, specifically for supplying current where necessary.
+- `feature/rele`: In this branch, the different relay functions are described for use in the chronoamperometry and cyclic voltammetry functions, specifically functions that describe how to open and close the relay.
+- `feature/timers`: In this branch, the different timer functions are described for use in the chronoamperometry and cyclic voltammetry functions, including functions that allow us to set time periods required for the workflow of reading chronoamperometry and cyclic voltammetry.
+- `hotfix/develop`: This branch resolved different errors caused by the merge of all the features into the `develop` branch.
+- `hotfix/stm32main`: This branch resolved various issues related to the workflow of `stm32main.c`, among others.
+- `hotfix/timers`: This branch resolved a problem related to variable declarations in the `timers.c` file.
 
 
-![Chronoamperometry results with the 1 mM (left) and 5 mM (right) sample using Visens-s.](assets/results/Visens_CA.png)
-![Results of the chronoamperometry with both samples overlapped.](assets/results/CA_Sample_en.png)
+## Results
 
-# Conclusions <a name="conclusions"></a>
+In this section, we describe the results obtained once the program was completed. It is worth noting that although the program was considered finished, it was not functional due to the reasons described in the following subsection.
 
+## Testing
 
-During this project, we have been able to successfully program a potentiostat to perform two of the most common electrochemical measurements in the biomedical field :chronoamperometry and cyclic voltammetry. To achieve this, all the concepts acquired in the course such as the Git workflow, interruptions, _timers_, _ADCs_ and serial communication (either I<sup>2</sup>C or _UART_) have been crucial for obtaining a solid, reliable and well-structured final result.
+Due to various issues that could not be identified, it was not possible to carry out testing. When attempting to connect the microcontroller to the viSens program, it displayed a blank graph, which led us to believe that there was a problem with data reception in the program. However, after a thorough review, this possibility was ruled out as it was confirmed that the program was receiving data correctly. Therefore, the problem must have originated from another source. Ultimately, it was not possible to determine the root cause of the issue, and therefore, the program could not be tested as intended.
 
-In addition, with Mabstat, we end the course on _Microcontrollers for Biomedical Applications and Systems_, an optional subject in Biomedical Engineering degree where we have learnt the basics of microcontroller programming both in Arduino (`C++`) and at the register level (`C`) to be able to develop our first prototypes of electronic devices that could help save lives in the future. Additionally, this course has provided us with essential elements, beyond microcontrollers, for teamwork such as Git and agile project management. We believe that these two tools will be of great help for our laboral future.
+## Conclusions
 
-# References <a name="references"></a>
+After completing the project, we can draw several conclusions about the work done:
 
-[1] Cynthia Zoski. (2007). Handbook of electrochemistry (1st ed.). Amsterdam: Elsevier.
-
-[2] Noémie Elgrishi, Kelley J. Rountree, Brian D. McCarthy, Eric S. Rountree, Thomas T. Eisenhart, and Jillian L. (2018). A Practical Beginner's Guide to Cyclic Voltammetry. DempseyJournal of Chemical Education. 95(2), 197-206.
-
-[3] Science Direct Topics. Chronoamperometry. [Internet] [Accessed on 06/10/2022]
-Available at: https://www.sciencedirect.com/topics/chemistry/chronoamperometry
-
-![](assets/imgs/Arvak.png)
+- Undertaking a project of this magnitude is more challenging than expected. Despite a four-month preparation phase, programming a potentiostat requires a significant amount of time and effort, and complex issues can arise at different stages of the project.
+- The use of Git for version control in software development projects is essential due to the convenience and traceability it provides to users.
+- Despite not achieving a functional program, the experience gained from attempting such a project is remarkable, as well as the knowledge acquired throughout the different lessons of the course.
